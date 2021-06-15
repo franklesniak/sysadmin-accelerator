@@ -94,7 +94,7 @@ Function GetWindowsProfileVersionNumberStringFromOperatingSystemVersionNumber(By
         ' No error occurred
         ' strOperatingSystemVersionNumber converted to lngMajor, lngMinor, lngBuild, lngRevision
         If lngMajor >= 10 Then
-            If ((lngMajor > 10) Or (lngMajor = 10 And lngMinor > 0) Then
+            If ((lngMajor > 10) Or (lngMajor = 10 And lngMinor > 0)) Then
                 ' Some release newer than Windows 10 or Windows Server v10
                 ' TODO: Update when OS is released newer than Windows 10
                 strWorkingProfileVersionNumber = "6.0"
