@@ -37,7 +37,7 @@ Function TestObjectForData(ByVal objToCheck)
 
     'region DownloadLocationNotice ####################################################
     ' The most up-to-date version of this script can be found on the author's GitHub repository
-    ' at https://github.com/franklesniak/Test_Object_For_Data
+    ' at https://github.com/franklesniak/sysadmin-accelerator
     'endregion DownloadLocationNotice ####################################################
 
     'region Acknowledgements ####################################################

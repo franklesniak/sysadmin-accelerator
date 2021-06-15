@@ -85,7 +85,7 @@ Function TestProcessProcessorArchitectureAvailableOnWindowsVersionAndProcessorAr
 
     'region DownloadLocationNotice ####################################################
     ' The most up-to-date version of this script can be found on the author's GitHub repository
-    ' at https://github.com/franklesniak/VBScript_Resources
+    ' at https://github.com/franklesniak/sysadmin-accelerator
     'endregion DownloadLocationNotice ####################################################
 
     'region Acknowledgements ####################################################

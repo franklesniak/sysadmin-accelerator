@@ -118,7 +118,7 @@ Class Version
 
     'region DownloadLocationNotice ####################################################
     ' The most up-to-date version of this script can be found on the author's GitHub repository
-    ' at https://github.com/franklesniak/dotNet_System_Version_on_VBScript
+    ' at https://github.com/franklesniak/sysadmin-accelerator
     'endregion DownloadLocationNotice ####################################################
 
     'region Acknowledgements ####################################################
