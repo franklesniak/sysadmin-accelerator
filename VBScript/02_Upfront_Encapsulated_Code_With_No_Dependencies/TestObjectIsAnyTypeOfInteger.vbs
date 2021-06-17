@@ -33,7 +33,7 @@ Function TestObjectIsAnyTypeOfInteger(ByRef objToTest)
     '   boolResult = TestObjectIsAnyTypeOfInteger(objToTest)
     '   ' boolResult is equal to False
     '
-    ' Version: 1.0.20210613.0
+    ' Version: 1.0.20210615.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -98,5 +98,5 @@ Function TestObjectIsAnyTypeOfInteger(ByRef objToTest)
         End If
     End If
 
-    TestObjectIsStringContainingData = boolFunctionReturn
+    TestObjectIsAnyTypeOfInteger = boolFunctionReturn
 End Function
