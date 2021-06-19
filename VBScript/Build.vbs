@@ -349,7 +349,7 @@ Const UseSystemDefault = -2
 Const adVarChar = 200
 Const adOpenStatic = 3
 
-arrSubfolderNames = Array("01_Overall_Script_Header", "02_Upfront_Encapsulated_Code_With_No_Dependencies", "03_Main_Section_Code_Executed_Every_Time", "04_Later_Encapsulated_Code_With_Dependencies_on_Main", "05_Script_Footer")
+arrSubfolderNames = Array("01_Overall_Script_Header", "02_Upfront_Encapsulated_Code_With_No_Dependencies", "03_Main_Section_Code_Executed_Every_Time", "99_Script_Footer")
 strOutputFileName = "Accelerator.vbs"
 
 strOutput = ""
