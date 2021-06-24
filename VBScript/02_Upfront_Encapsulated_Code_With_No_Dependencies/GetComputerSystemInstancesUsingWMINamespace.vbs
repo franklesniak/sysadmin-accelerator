@@ -19,7 +19,7 @@ Function GetComputerSystemInstancesUsingWMINamespace(ByRef arrComputerSystemInst
     ' Example:
     '   intReturnCode = ConnectLocalWMINamespace(objSWbemServicesWMINamespace, Null, Null)
     '   If intReturnCode = 0 Then
-    '       ' Successfully connected to the local computer's TPM WMI Namespace
+    '       ' Successfully connected to the local computer's root\CIMv2 WMI Namespace
     '       intReturnCode = GetComputerSystemInstancesUsingWMINamespace(arrComputerSystemInstances, objSWbemServicesWMINamespace)
     '       If intReturnCode = 0 Then
     '           ' The Win32_ComputerSystem instance was retrieved successfully and is available
@@ -32,7 +32,7 @@ Function GetComputerSystemInstancesUsingWMINamespace(ByRef arrComputerSystemInst
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210619.0
+    ' Version: 1.0.20210624.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################

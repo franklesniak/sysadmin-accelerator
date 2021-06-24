@@ -1,14 +1,11 @@
 Function GetComputerSystemInstances(ByRef arrComputerSystemInstances)
     'region FunctionMetadata ####################################################
-    ' Assuming that objWMINamespace represents a successful connection to the root\CIMv2
-    ' WMI namespace, this function retrieves the Win32_ComputerSystem instances and stores them
-    ' in arrComputerSystemInstances.
+    ' This function retrieves the Win32_ComputerSystem instances and stores them in
+    ' arrComputerSystemInstances.
     '
-    ' The function takes two positional arguments:
-    '  - The first argument (arrComputerSystemInstances) is populated upon success with the
-    '    computer system instances returned from WMI of type Win32_ComputerSystem
-    '  - The second argument (objWMINamespace) is a WMI Namespace connection argument that must
-    '    already be connected to the WMI namespace root\CIMv2
+    ' The function takes one positional argument (arrComputerSystemInstances), which is
+    ' populated upon success with the computer system instances returned from WMI of type
+    ' Win32_ComputerSystem
     '
     ' The function returns 0 if Win32_ComputerSystem instances were retrieved successfully, and
     ' there was one computer system instance (as expected). If no Win32_ComputerSystem objects
@@ -28,7 +25,7 @@ Function GetComputerSystemInstances(ByRef arrComputerSystemInstances)
     '       ' An error occurred and no Win32_ComputerSystem instances were retrieved
     '   End If
     '
-    ' Version: 1.0.20210619.0
+    ' Version: 1.0.20210624.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
