@@ -32,7 +32,7 @@ Function GetComputerSystemInstancesUsingWMINamespace(ByRef arrComputerSystemInst
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210624.0
+    ' Version: 1.0.20210624.1
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -101,7 +101,8 @@ Function GetComputerSystemInstancesUsingWMINamespace(ByRef arrComputerSystemInst
                 Else
                     If intTemp < 0 Then
                         intFunctionReturn = intFunctionReturn + (-6 * intReturnMultiplier)
-                    ElseIf intTemp > 0 Then
+                    Else
+                        ' intTemp >= 0
                         intFunctionReturn = intTemp - 1
                         ' -1 would be returned if there are no Win32_ComputerSystem instances
                     End If

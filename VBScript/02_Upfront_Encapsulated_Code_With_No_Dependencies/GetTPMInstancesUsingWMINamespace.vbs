@@ -24,7 +24,7 @@ Function GetTPMInstancesUsingWMINamespace(ByRef arrTPMInstances, ByVal objWMINam
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210615.0
+    ' Version: 1.0.20210624.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -73,29 +73,31 @@ Function GetTPMInstancesUsingWMINamespace(ByRef arrTPMInstances, ByVal objWMINam
     intReturnMultiplier = 16
 
     If TestObjectForData(objWMINamespace) <> True Then
-        intFunctionReturn = intFunctionReturn + (-1 * intReturnMultiplier)
+        intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier)
     Else
         On Error Resume Next
         Set arrWorkingTPMInstances = objWMINamespace.InstancesOf("Win32_Tpm")
         If Err Then
             On Error Goto 0
             Err.Clear
-            intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier)
+            intFunctionReturn = intFunctionReturn + (-3 * intReturnMultiplier)
         Else
             intTemp = arrWorkingTPMInstances.Count
             If Err Then
                 On Error Goto 0
                 Err.Clear
-                intFunctionReturn = intFunctionReturn + (-3 * intReturnMultiplier)
+                intFunctionReturn = intFunctionReturn + (-4 * intReturnMultiplier)
             Else
                 On Error Goto 0
                 If TestObjectIsAnyTypeOfInteger(intTemp) = False Then
-                    intFunctionReturn = intFunctionReturn + (-4 * intReturnMultiplier)
+                    intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
                     If intTemp < 0 Then
-                        intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
-                    ElseIf intTemp > 0 Then
+                        intFunctionReturn = intFunctionReturn + (-6 * intReturnMultiplier)
+                    Else
+                        ' intTemp >= 0
                         intFunctionReturn = intTemp
+                        ' intFunctionReturn is 0 if there are zero TPMs
                     End If
                 End If
             End If
@@ -108,7 +110,7 @@ Function GetTPMInstancesUsingWMINamespace(ByRef arrTPMInstances, ByVal objWMINam
         If Err Then
             On Error Goto 0
             Err.Clear
-            intFunctionReturn = (-6 * intReturnMultiplier)
+            intFunctionReturn = (-7 * intReturnMultiplier)
         Else
             On Error Goto 0
         End If
