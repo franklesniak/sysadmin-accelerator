@@ -8,8 +8,8 @@ Function TestComputerIsVirtualMachineUsingComputerSystemInstances(ByRef boolIsVM
     '  - The first argument (boolIsVM) is populated upon success with a boolean value: True
     '    when the computer was determined to be a virtual machine, False when the computer was
     '    determined to not be a virtual machine
-    '  - The second argument (arrComputerSystemInstances) is an array/collection of objects of class
-    '    Win32_ComputerSystem
+    '  - The second argument (arrComputerSystemInstances) is an array/collection of objects of
+    '    class Win32_ComputerSystem
     '
     ' The function returns a 0 when the function successfully evaluated whether the computer is
     ' a virtual machine. The function returns a negative integer if an error occurred.
@@ -29,7 +29,7 @@ Function TestComputerIsVirtualMachineUsingComputerSystemInstances(ByRef boolIsVM
     '       End If
     '  End If
     '
-    ' Version: 1.0.20210625.0
+    ' Version: 1.0.20210627.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
