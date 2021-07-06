@@ -1,5 +1,5 @@
 #region License ####################################################
-# Copyright 2021 Frank Lesniak
+# Copyright 2021 Sam Hansen
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -443,26 +443,26 @@ function Test-ObjectForData {
 
 $arrSubfolderNames = @("01_Overall_Script_Header", "02_Upfront_Encapsulated_Code_With_No_Dependencies", "03_Main_Section_Code_Executed_Every_Time", "99_Script_Footer")
 # NOTE: Temporary toggle compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell.
-# $strOutputFileName "Accelerator.ps1"
-$strOutputFileName = "Accelerator.vbs"
-$strFileContents
+#$strOutputFileName = "Accelerator.vbs"
+$strOutputFileName = "Accelerator.ps1"
+$strFileContents = ""
 	
 $objScriptInvocation = (Get-Variable MyInvocation -Scope Script).Value
 $strScriptPath = $objScriptInvocation.MyCommand.Path
 $strScriptDir = Split-Path $strScriptPath -Parent
 
 # NOTE: Temporary variables to compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell. 
-$strScriptParent = Split-Path $strScriptDir -Parent
-$strVBScriptFolderIdentifier = "VBScript"
-
+#$strScriptParent = Split-Path $strScriptDir -Parent
+#$strVBScriptFolderIdentifier = "VBScript"
 # NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
-$strVBScriptPath = Join-Path -Path $strScriptParent -ChildPath $strVBScriptFolderIdentifier
-$strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath "\"
+#$strVBScriptPath = Join-Path -Path $strScriptParent -ChildPath $strVBScriptFolderIdentifier
+#$strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath "\"
 
 if(Test-ObjectForData([ref]$strScriptDir))
 {
 	if($strScriptDir -notlike "*\")
 	{
+        # TODO: Replace with Join-Path
 		$strScriptDir += "\"
 	}
 
@@ -473,7 +473,7 @@ if(Test-ObjectForData([ref]$strScriptDir))
 		# NOTE: Temporary toggle to compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell. 
 		#$strCurrentPath = Join-Path -Path $strScriptDir -ChildPath $strSubfolderName -AdditionalChildPath "\"
 		# NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
-		$strCurrentPath = Join-Path -Path $strVBScriptPath -ChildPath $strSubfolderName
+		$strCurrentPath = Join-Path -Path $strScriptDir -ChildPath $strSubfolderName
 		$strCurrentPath = Join-Path $strCurrentPath -ChildPath "\"
 
 		$arrFiles = Get-ChildItem -Path "$strCurrentPath*" -File
