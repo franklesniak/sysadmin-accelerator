@@ -445,11 +445,9 @@ $objMissingModules = @()
 $objScriptInvocation = (Get-Variable MyInvocation -Scope Script).Value
 $strScriptPath = $objScriptInvocation.MyCommand.Path
 $strScriptDir = Split-Path $strScriptPath -Parent
-
-# NOTE: Temporary variables to compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell. 
 $strScriptParent = Split-Path $strScriptDir -Parent
-$strVBScriptFolderIdentifier = "VBScript"
 
+$strVBScriptFolderIdentifier = "VBScript"
 # NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
 $strVBScriptPath = Join-Path -Path $strScriptParent -ChildPath $strVBScriptFolderIdentifier
 $strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath "\"
