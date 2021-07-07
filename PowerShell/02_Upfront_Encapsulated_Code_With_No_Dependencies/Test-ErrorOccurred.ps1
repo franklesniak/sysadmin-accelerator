@@ -1,3 +1,19 @@
+function Test-ErrorOccurred {
+    #region FunctionHeader ####################################################
+    # Function accepts two positional arguments:
+    #
+    # The first argument is a reference (memory pointer) to the last error that had occurred
+    #   prior to calling the command in question - that is, the command that we want to test
+    #   to see if an error occurred.
+    #
+    # The second argument is a reference to the last error that had occurred as-of the
+    #   completion of the command in question
+    #
+    # Function returns $true if it appears that an error occurred; $false otherwise
+    #
+    # Version: 1.0.20210105.0
+    #endregion FunctionHeader ####################################################
+    
     #region License ####################################################
     # Copyright (c) 2021 Frank Lesniak
     #
@@ -22,22 +38,6 @@
     # The most up-to-date version of this script can be found on the author's GitHub repository
     # at https://github.com/franklesniak/sysadmin-accelerator
     #endregion DownloadLocationNotice ####################################################
-
-function Test-ErrorOccurred {
-    #region FunctionHeader ####################################################
-    # Function accepts two positional arguments:
-    #
-    # The first argument is a reference (memory pointer) to the last error that had occurred
-    #   prior to calling the command in question - that is, the command that we want to test
-    #   to see if an error occurred.
-    #
-    # The second argument is a reference to the last error that had occurred as-of the
-    #   completion of the command in question
-    #
-    # Function returns $true if it appears that an error occurred; $false otherwise
-    #
-    # Version: 1.0.20210105.0
-    #endregion FunctionHeader ####################################################
 
     # TO-DO: Validate input
 

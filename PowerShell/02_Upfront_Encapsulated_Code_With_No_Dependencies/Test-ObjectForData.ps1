@@ -1,47 +1,3 @@
-    #region License
-    ###########################################################################################
-    # Copyright 2021 Frank Lesniak
-    #
-    # Permission is hereby granted, free of charge, to any person obtaining a copy of this
-    # software and associated documentation files (the "Software"), to deal in the Software
-    # without restriction, including without limitation the rights to use, copy, modify, merge,
-    # publish, distribute, sublicense, and/or sell copies of the Software, and to permit
-    # persons to whom the Software is furnished to do so, subject to the following conditions:
-    #
-    # The above copyright notice and this permission notice shall be included in all copies or
-    # substantial portions of the Software.
-    #
-    # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-    # INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-    # PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-    # FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-    # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-    # DEALINGS IN THE SOFTWARE.
-    ###########################################################################################
-    #endregion License
-
-    #region DownloadLocationNotice
-    ###########################################################################################
-    # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/Test_Object_For_Data
-    ###########################################################################################
-    #endregion DownloadLocationNotice
-
-    #region Acknowledgements ####################################################
-    # Thanks to Scott Dexter for writing the article "Empty Nothing And Null How Do You Feel
-    # Today", which inspired me to create this function originally in VBScript:
-    # https://evolt.org/node/346
-    #
-    # Thanks to Kevin Marquette for providing guidance on how PowerShell handles $null and
-    # "empty $null". You also helped me to define test cases to validate that this function
-    # works as intended, and pointed me toward [string]::IsNullOrEmpty()
-    # https://powershellexplained.com/2018-12-23-Powershell-null-everything-you-wanted-to-know/
-    #
-    # Finally, thanks to Cody Konior for his article that pointed out DBNull and NullString as
-    # alternative forms of "null" in PowerShell:
-    # https://www.codykonior.com/2013/10/17/checking-for-null-in-powershell/
-    #endregion Acknowledgements ####################################################
-    
 function Test-ObjectForData {
     #region TestObjectForDataFunctionMetadata
     ###########################################################################################
@@ -96,6 +52,50 @@ function Test-ObjectForData {
     # Version: 1.0.20200105.1
     ###########################################################################################
     #endregion TestObjectForDataFunctionMetadata
+
+    #region License
+    ###########################################################################################
+    # Copyright 2021 Frank Lesniak
+    #
+    # Permission is hereby granted, free of charge, to any person obtaining a copy of this
+    # software and associated documentation files (the "Software"), to deal in the Software
+    # without restriction, including without limitation the rights to use, copy, modify, merge,
+    # publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+    # persons to whom the Software is furnished to do so, subject to the following conditions:
+    #
+    # The above copyright notice and this permission notice shall be included in all copies or
+    # substantial portions of the Software.
+    #
+    # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+    # INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    # PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+    # FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+    # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    # DEALINGS IN THE SOFTWARE.
+    ###########################################################################################
+    #endregion License
+
+    #region DownloadLocationNotice
+    ###########################################################################################
+    # The most up-to-date version of this script can be found on the author's GitHub repository
+    # at https://github.com/franklesniak/Test_Object_For_Data
+    ###########################################################################################
+    #endregion DownloadLocationNotice
+
+    #region Acknowledgements ####################################################
+    # Thanks to Scott Dexter for writing the article "Empty Nothing And Null How Do You Feel
+    # Today", which inspired me to create this function originally in VBScript:
+    # https://evolt.org/node/346
+    #
+    # Thanks to Kevin Marquette for providing guidance on how PowerShell handles $null and
+    # "empty $null". You also helped me to define test cases to validate that this function
+    # works as intended, and pointed me toward [string]::IsNullOrEmpty()
+    # https://powershellexplained.com/2018-12-23-Powershell-null-everything-you-wanted-to-know/
+    #
+    # Finally, thanks to Cody Konior for his article that pointed out DBNull and NullString as
+    # alternative forms of "null" in PowerShell:
+    # https://www.codykonior.com/2013/10/17/checking-for-null-in-powershell/
+    #endregion Acknowledgements ####################################################
 
     $refObjectToTest = $args[0]
     if ($args.Count -gt 1) {

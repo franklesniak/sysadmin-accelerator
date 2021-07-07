@@ -1,4 +1,13 @@
-   #region License ####################################################
+
+function Get-ReferenceToLastError {
+    #region FunctionHeader ####################################################
+    # Function returns $null if no errors on on the $error stack;
+    # Otherwise, function returns a reference (memory pointer) to the last error that occurred.
+    #
+    # Version: 1.0.20210105.0
+    #endregion FunctionHeader ####################################################
+
+    #region License ####################################################
     # Copyright (c) 2021 Frank Lesniak
     #
     # Permission is hereby granted, free of charge, to any person obtaining a copy of this
@@ -22,14 +31,6 @@
     # The most up-to-date version of this script can be found on the author's GitHub repository
     # at https://github.com/franklesniak/sysadmin-accelerator
     #endregion DownloadLocationNotice ####################################################
-
-function Get-ReferenceToLastError {
-    #region FunctionHeader ####################################################
-    # Function returns $null if no errors on on the $error stack;
-    # Otherwise, function returns a reference (memory pointer) to the last error that occurred.
-    #
-    # Version: 1.0.20210105.0
-    #endregion FunctionHeader ####################################################
 
     if ($error.Count -gt 0) {
         [ref]($error[0])
