@@ -19,7 +19,7 @@
 #endregion License ####################################################
 
 #region DownloadLocationNotice ####################################################
-# The most up-to-date version of this script can be found on the author#s GitHub repository
+# The most up-to-date version of this script can be found on the author's GitHub repository
 # at https://github.com/franklesniak/sysadmin-accelerator
 #endregion DownloadLocationNotice ####################################################
 
@@ -57,7 +57,7 @@ function Get-ReferenceToLastError {
 
     #region DownloadLocationNotice ####################################################
     # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/PowerShell_Resources
+    # at https://github.com/franklesniak/sysadmin-accelerator
     #endregion DownloadLocationNotice ####################################################
 
     if ($error.Count -gt 0) {
@@ -105,7 +105,7 @@ function Test-ErrorOccurred {
 
     #region DownloadLocationNotice ####################################################
     # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/PowerShell_Resources
+    # at https://github.com/franklesniak/sysadmin-accelerator
     #endregion DownloadLocationNotice ####################################################
 
     # TO-DO: Validate input
@@ -180,7 +180,7 @@ function Get-ObjectType {
 
     #region DownloadLocationNotice ####################################################
     # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/PowerShell_Resources
+    # at https://github.com/franklesniak/sysadmin-accelerator
     #endregion DownloadLocationNotice ####################################################
 
     trap {
@@ -333,7 +333,7 @@ function Test-ObjectForData {
     #region DownloadLocationNotice
     ###########################################################################################
     # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/Test_Object_For_Data
+    # at https://github.com/franklesniak/sysadmin-accelerator
     ###########################################################################################
     #endregion DownloadLocationNotice
 
