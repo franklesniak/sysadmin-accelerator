@@ -19,14 +19,10 @@
 #endregion License ####################################################
 
 #region DownloadLocationNotice ####################################################
-# The most up-to-date version of this script can be found on the author's GitHub repository
+# The most up-to-date version of this script can be found on the author#s GitHub repository
 # at https://github.com/franklesniak/sysadmin-accelerator
 #endregion DownloadLocationNotice ####################################################
 
-#region Acknowledgements ####################################################
-#endregion Acknowledgements ####################################################
-
-#region FunctionsToSupportErrorHandling
 function Get-ReferenceToLastError {
     #region FunctionHeader ####################################################
     # Function returns $null if no errors on on the $error stack;
@@ -57,7 +53,7 @@ function Get-ReferenceToLastError {
 
     #region DownloadLocationNotice ####################################################
     # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/sysadmin-accelerator
+    # at https://github.com/franklesniak/PowerShell_Resources
     #endregion DownloadLocationNotice ####################################################
 
     if ($error.Count -gt 0) {
@@ -105,7 +101,7 @@ function Test-ErrorOccurred {
 
     #region DownloadLocationNotice ####################################################
     # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/sysadmin-accelerator
+    # at https://github.com/franklesniak/PowerShell_Resources
     #endregion DownloadLocationNotice ####################################################
 
     # TO-DO: Validate input
@@ -180,7 +176,7 @@ function Get-ObjectType {
 
     #region DownloadLocationNotice ####################################################
     # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/sysadmin-accelerator
+    # at https://github.com/franklesniak/PowerShell_Resources
     #endregion DownloadLocationNotice ####################################################
 
     trap {
@@ -333,7 +329,7 @@ function Test-ObjectForData {
     #region DownloadLocationNotice
     ###########################################################################################
     # The most up-to-date version of this script can be found on the author's GitHub repository
-    # at https://github.com/franklesniak/sysadmin-accelerator
+    # at https://github.com/franklesniak/Test_Object_For_Data
     ###########################################################################################
     #endregion DownloadLocationNotice
 
@@ -441,55 +437,64 @@ function Test-ObjectForData {
     $boolResult
 }
 
-$arrSubfolderNames = @('01_Overall_Script_Header', '02_Upfront_Encapsulated_Code_With_No_Dependencies', '03_Main_Section_Code_Executed_Every_Time', '99_Script_Footer')
-# NOTE: Temporary toggle compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell.
-# $strOutputFileName = 'Accelerator.vbs'
-$strOutputFileName = 'Accelerator.ps1'
-$strFileContents = ''
-	
+# NOTE: Unlike the build script, we are not checking for user-generated code in '03_Main_Section_Code_Executed_Every_Time'
+$arrSubfolderNames = @('01_Overall_Script_Header', '02_Upfront_Encapsulated_Code_With_No_Dependencies', '99_Script_Footer')
+$strOutputFileName = 'Missing_Modules.txt'
+$objMissingModules = @()
+
 $objScriptInvocation = (Get-Variable MyInvocation -Scope Script).Value
 $strScriptPath = $objScriptInvocation.MyCommand.Path
 $strScriptDir = Split-Path $strScriptPath -Parent
+$strScriptParent = Split-Path $strScriptDir -Parent
 
-# NOTE: Temporary variables to compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell. 
-# $strScriptParent = Split-Path $strScriptDir -Parent
-# $strVBScriptFolderIdentifier = 'VBScript'
+$strVBScriptFolderIdentifier = 'VBScript'
 # NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
-# $strVBScriptPath = Join-Path -Path $strScriptParent -ChildPath $strVBScriptFolderIdentifier
-# $strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath '\'
+$strVBScriptPath = Join-Path -Path $strScriptParent -ChildPath $strVBScriptFolderIdentifier
+$strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath '\'
 
-if(Test-ObjectForData([ref]$strScriptDir))
+$strPowerShellFolderIdentifier = 'PowerShell'
+# NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
+$strPowerShellPath = Join-Path -Path $strScriptParent -ChildPath $strPowerShellFolderIdentifier
+$strPowerShellPath = Join-Path -Path $strPowerShellPath -ChildPath '\'
+
+if(Test-ObjectForData([ref]$strScriptParent))
 {
-	if($strScriptDir -notlike '*\')
+	if((Test-ObjectForData([ref]$strVBScriptPath)) -and (Test-ObjectFordata([ref]$strPowerShellPath)))
 	{
-        # TODO: Replace with Join-Path
-		$strScriptDir += '\'
-	}
-
-	$strOutputFullPath = Join-Path -Path $strScriptDir -ChildPath $strOutputFileName
-	New-Item -Path $strScriptDir -Name $strOutputFileName -ItemType 'File' -Force -Value ''
-	
-	foreach ($strSubfolderName in $arrSubfolderNames) {
-		# NOTE: Temporary toggle to compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell. 
-		# $strCurrentPath = Join-Path -Path $strScriptDir -ChildPath $strSubfolderName -AdditionalChildPath '\'
-		# NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
-		$strCurrentPath = Join-Path -Path $strScriptDir -ChildPath $strSubfolderName
-		$strCurrentPath = Join-Path $strCurrentPath -ChildPath '\'
-
-		$arrFiles = Get-ChildItem -Path '$strCurrentPath*' -File
-		$arrFiles = @($arrFiles | Sort-Object -Property @('FullName'))
-
-		foreach ($objFile in $arrFiles) {
-			# NOTE: -Raw was introduced to Get-Content in PowerShell 3.0. https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content?view=powershell-7.1
-			$strCurrentFileContents = Get-Content -Path $objFile.FullName -Raw
-			$strCurrentFileContents += "`r`n"
-			
-			$strFileContents += $strCurrentFileContents
+		if($strScriptDir -notlike '*\')
+		{
+			$strScriptDir = Join-Path -Path $strScriptDir -ChildPath '\'
 		}
-	}
 
-	if(Get-ChildItem -Path $strOutputFullPath -File)
-	{
-		Out-File -FilePath $strOutputFullPath -InputObject $strFileContents -Encoding Default -Append -Force
+		$strOutputFullPath = Join-Path -Path $strScriptDir -ChildPath $strOutputFileName
+		
+		foreach($strSubfolderName in $arrSubfolderNames)
+		{
+			$strVBScriptCurrentPath = Join-Path -Path $strVBScriptPath -ChildPath $strSubfolderName
+			$strVBScriptCurrentPath = Join-Path -Path $strVBScriptCurrentPath -ChildPath '\'
+			$strPowerShellCurrentPath = Join-Path -Path $strPowerShellPath -ChildPath $strSubfolderName
+			$strPowerShellCurrentPath = Join-Path -Path $strPowerShellCurrentPath -ChildPath '\'
+
+			$arrVBScriptFiles = Get-ChildItem -Path '$strVBScriptCurrentPath*' -File
+			$arrVBScriptFiles = @($arrVBScriptFiles | Sort-Object -Property @('FullName'))
+			$arrVBScriptFilesNoExtension = $arrVBScriptFiles | ForEach-Object { Split-Path -Path $_.Name -LeafBase }
+			$arrPowerShellFiles = Get-ChildItem -Path '$strPowerShellCurrentPath*' -File
+			$arrPowerShellFiles = @($arrPowerShellFiles | Sort-Object -Property @('FullName'))
+            # Convert PowerShell filenames to VBScript names for comparison. 
+			$arrPowerShellFilesNoExtension = $arrPowerShellFiles | ForEach-Object { 
+                $strLeafBase = Split-Path -Path $_.Name -LeafBase
+                # NOTE: $strLeafBase -contains '-' was not working properly, but this does. 
+                if($strLeafBase.Contains('-'))
+                {
+                    $strLeafBase = $strLeafBase -replace('\-','')
+                }
+                $strLeafBase
+            }
+
+			$objMissingModules += Compare-Object -ReferenceObject $arrVBScriptFilesNoExtension -DifferenceObject $arrPowerShellFilesNoExtension
+		}
+
+		$objMissingModules | Select-Object InputObject, @{Name='Missing From'; Expression = {if($_.SideIndicator -eq '<='){'PowerShell'}else{'VBScript'}}}
+        $objMissingModules | Select-Object InputObject, @{Name='Missing From'; Expression = {if($_.SideIndicator -eq '<='){'PowerShell'}else{'VBScript'}}} | Out-File -FilePath $strOutputFullPath -Encoding Default -Force 
 	}
 }
