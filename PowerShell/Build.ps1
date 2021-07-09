@@ -441,48 +441,48 @@ function Test-ObjectForData {
     $boolResult
 }
 
-$arrSubfolderNames = @("01_Overall_Script_Header", "02_Upfront_Encapsulated_Code_With_No_Dependencies", "03_Main_Section_Code_Executed_Every_Time", "99_Script_Footer")
+$arrSubfolderNames = @('01_Overall_Script_Header', '02_Upfront_Encapsulated_Code_With_No_Dependencies', '03_Main_Section_Code_Executed_Every_Time', '99_Script_Footer')
 # NOTE: Temporary toggle compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell.
-#$strOutputFileName = "Accelerator.vbs"
-$strOutputFileName = "Accelerator.ps1"
-$strFileContents = ""
+# $strOutputFileName = 'Accelerator.vbs'
+$strOutputFileName = 'Accelerator.ps1'
+$strFileContents = ''
 	
 $objScriptInvocation = (Get-Variable MyInvocation -Scope Script).Value
 $strScriptPath = $objScriptInvocation.MyCommand.Path
 $strScriptDir = Split-Path $strScriptPath -Parent
 
 # NOTE: Temporary variables to compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell. 
-#$strScriptParent = Split-Path $strScriptDir -Parent
-#$strVBScriptFolderIdentifier = "VBScript"
+# $strScriptParent = Split-Path $strScriptDir -Parent
+# $strVBScriptFolderIdentifier = 'VBScript'
 # NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
-#$strVBScriptPath = Join-Path -Path $strScriptParent -ChildPath $strVBScriptFolderIdentifier
-#$strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath "\"
+# $strVBScriptPath = Join-Path -Path $strScriptParent -ChildPath $strVBScriptFolderIdentifier
+# $strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath '\'
 
 if(Test-ObjectForData([ref]$strScriptDir))
 {
-	if($strScriptDir -notlike "*\")
+	if($strScriptDir -notlike '*\')
 	{
         # TODO: Replace with Join-Path
-		$strScriptDir += "\"
+		$strScriptDir += '\'
 	}
 
 	$strOutputFullPath = Join-Path -Path $strScriptDir -ChildPath $strOutputFileName
-	New-Item -Path $strScriptDir -Name $strOutputFileName -ItemType "File" -Force -Value ""
+	New-Item -Path $strScriptDir -Name $strOutputFileName -ItemType 'File' -Force -Value ''
 	
 	foreach ($strSubfolderName in $arrSubfolderNames) {
 		# NOTE: Temporary toggle to compile the VBScript version of the sysadmin-accelerator using PowerShell while primary functions are being ported to PowerShell. 
-		#$strCurrentPath = Join-Path -Path $strScriptDir -ChildPath $strSubfolderName -AdditionalChildPath "\"
+		# $strCurrentPath = Join-Path -Path $strScriptDir -ChildPath $strSubfolderName -AdditionalChildPath '\'
 		# NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
 		$strCurrentPath = Join-Path -Path $strScriptDir -ChildPath $strSubfolderName
-		$strCurrentPath = Join-Path $strCurrentPath -ChildPath "\"
+		$strCurrentPath = Join-Path $strCurrentPath -ChildPath '\'
 
-		$arrFiles = Get-ChildItem -Path "$strCurrentPath*" -File
+		$arrFiles = Get-ChildItem -Path '$strCurrentPath*' -File
 		$arrFiles = @($arrFiles | Sort-Object -Property @('FullName'))
 
 		foreach ($objFile in $arrFiles) {
 			# NOTE: -Raw was introduced to Get-Content in PowerShell 3.0. https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content?view=powershell-7.1
 			$strCurrentFileContents = Get-Content -Path $objFile.FullName -Raw
-			$strCurrentFileContents += "`r`n" 
+			$strCurrentFileContents += "`r`n"
 			
 			$strFileContents += $strCurrentFileContents
 		}
