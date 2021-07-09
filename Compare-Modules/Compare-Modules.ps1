@@ -437,9 +437,9 @@ function Test-ObjectForData {
     $boolResult
 }
 
-# NOTE: Unlike the build script, we are not checking for user-generated code in "03_Main_Section_Code_Executed_Every_Time"
-$arrSubfolderNames = @("01_Overall_Script_Header", "02_Upfront_Encapsulated_Code_With_No_Dependencies", "99_Script_Footer")
-$strOutputFileName = "Missing_Modules.txt"
+# NOTE: Unlike the build script, we are not checking for user-generated code in '03_Main_Section_Code_Executed_Every_Time'
+$arrSubfolderNames = @('01_Overall_Script_Header', '02_Upfront_Encapsulated_Code_With_No_Dependencies', '99_Script_Footer')
+$strOutputFileName = 'Missing_Modules.txt'
 $objMissingModules = @()
 
 $objScriptInvocation = (Get-Variable MyInvocation -Scope Script).Value
@@ -447,23 +447,23 @@ $strScriptPath = $objScriptInvocation.MyCommand.Path
 $strScriptDir = Split-Path $strScriptPath -Parent
 $strScriptParent = Split-Path $strScriptDir -Parent
 
-$strVBScriptFolderIdentifier = "VBScript"
+$strVBScriptFolderIdentifier = 'VBScript'
 # NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
 $strVBScriptPath = Join-Path -Path $strScriptParent -ChildPath $strVBScriptFolderIdentifier
-$strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath "\"
+$strVBScriptPath = Join-Path -Path $strVBScriptPath -ChildPath '\'
 
-$strPowerShellFolderIdentifier = "PowerShell"
+$strPowerShellFolderIdentifier = 'PowerShell'
 # NOTE: -AdditionalChildPath does not exist on PowerShell 5.0 and earlier. 
 $strPowerShellPath = Join-Path -Path $strScriptParent -ChildPath $strPowerShellFolderIdentifier
-$strPowerShellPath = Join-Path -Path $strPowerShellPath -ChildPath "\"
+$strPowerShellPath = Join-Path -Path $strPowerShellPath -ChildPath '\'
 
 if(Test-ObjectForData([ref]$strScriptParent))
 {
 	if((Test-ObjectForData([ref]$strVBScriptPath)) -and (Test-ObjectFordata([ref]$strPowerShellPath)))
 	{
-		if($strScriptDir -notlike "*\")
+		if($strScriptDir -notlike '*\')
 		{
-			$strScriptDir = Join-Path -Path $strScriptDir -ChildPath "\"
+			$strScriptDir = Join-Path -Path $strScriptDir -ChildPath '\'
 		}
 
 		$strOutputFullPath = Join-Path -Path $strScriptDir -ChildPath $strOutputFileName
@@ -471,20 +471,20 @@ if(Test-ObjectForData([ref]$strScriptParent))
 		foreach($strSubfolderName in $arrSubfolderNames)
 		{
 			$strVBScriptCurrentPath = Join-Path -Path $strVBScriptPath -ChildPath $strSubfolderName
-			$strVBScriptCurrentPath = Join-Path -Path $strVBScriptCurrentPath -ChildPath "\"
+			$strVBScriptCurrentPath = Join-Path -Path $strVBScriptCurrentPath -ChildPath '\'
 			$strPowerShellCurrentPath = Join-Path -Path $strPowerShellPath -ChildPath $strSubfolderName
-			$strPowerShellCurrentPath = Join-Path -Path $strPowerShellCurrentPath -ChildPath "\"
+			$strPowerShellCurrentPath = Join-Path -Path $strPowerShellCurrentPath -ChildPath '\'
 
-			$arrVBScriptFiles = Get-ChildItem -Path "$strVBScriptCurrentPath*" -File
+			$arrVBScriptFiles = Get-ChildItem -Path '$strVBScriptCurrentPath*' -File
 			$arrVBScriptFiles = @($arrVBScriptFiles | Sort-Object -Property @('FullName'))
 			$arrVBScriptFilesNoExtension = $arrVBScriptFiles | ForEach-Object { Split-Path -Path $_.Name -LeafBase }
-			$arrPowerShellFiles = Get-ChildItem -Path "$strPowerShellCurrentPath*" -File
+			$arrPowerShellFiles = Get-ChildItem -Path '$strPowerShellCurrentPath*' -File
 			$arrPowerShellFiles = @($arrPowerShellFiles | Sort-Object -Property @('FullName'))
             # Convert PowerShell filenames to VBScript names for comparison. 
 			$arrPowerShellFilesNoExtension = $arrPowerShellFiles | ForEach-Object { 
                 $strLeafBase = Split-Path -Path $_.Name -LeafBase
-                # NOTE: $strLeafBase -contains "-" was not working properly, but this does. 
-                if($strLeafBase.Contains("-"))
+                # NOTE: $strLeafBase -contains '-' was not working properly, but this does. 
+                if($strLeafBase.Contains('-'))
                 {
                     $strLeafBase = $strLeafBase -replace('\-','')
                 }
@@ -494,7 +494,7 @@ if(Test-ObjectForData([ref]$strScriptParent))
 			$objMissingModules += Compare-Object -ReferenceObject $arrVBScriptFilesNoExtension -DifferenceObject $arrPowerShellFilesNoExtension
 		}
 
-		$objMissingModules | Select-Object InputObject, @{Name="Missing From"; Expression = {if($_.SideIndicator -eq "<="){"PowerShell"}else{"VBScript"}}}
-        $objMissingModules | Select-Object InputObject, @{Name="Missing From"; Expression = {if($_.SideIndicator -eq "<="){"PowerShell"}else{"VBScript"}}} | Out-File -FilePath $strOutputFullPath -Encoding Default -Force 
+		$objMissingModules | Select-Object InputObject, @{Name='Missing From'; Expression = {if($_.SideIndicator -eq '<='){'PowerShell'}else{'VBScript'}}}
+        $objMissingModules | Select-Object InputObject, @{Name='Missing From'; Expression = {if($_.SideIndicator -eq '<='){'PowerShell'}else{'VBScript'}}} | Out-File -FilePath $strOutputFullPath -Encoding Default -Force 
 	}
 }
