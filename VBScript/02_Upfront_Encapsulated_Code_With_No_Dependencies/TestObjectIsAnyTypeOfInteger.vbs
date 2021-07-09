@@ -33,7 +33,7 @@ Function TestObjectIsAnyTypeOfInteger(ByRef objToTest)
     '   boolResult = TestObjectIsAnyTypeOfInteger(objToTest)
     '   ' boolResult is equal to False
     '
-    ' Version: 1.0.20210615.0
+    ' Version: 1.1.20210709.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -80,7 +80,7 @@ Function TestObjectIsAnyTypeOfInteger(ByRef objToTest)
             Err.Clear
             boolFunctionReturn = False
         Else
-            boolTest = (intVarType <> 2 And intVarType <> 3)
+            boolTest = (intVarType <> 2 And intVarType <> 3 And intVarType <> 17 And intVarType <> 20)
             If Err Then
                 On Error Goto 0
                 Err.Clear
@@ -88,10 +88,10 @@ Function TestObjectIsAnyTypeOfInteger(ByRef objToTest)
             Else
                 On Error Goto 0
                 If boolTest = True Then
-                    ' VarType(objToTest) <> 2 And VarType(objToTest) <> 3
+                    ' VarType(objToTest) <> 2 And VarType(objToTest) <> 3 And VarType(objToTest) <> 17 And VarType(objToTest) <> 20
                     boolFunctionReturn = False
                 Else
-                    ' VarType(objToTest) = 2 Or VarType(objToTest) = 3
+                    ' VarType(objToTest) = 2 Or VarType(objToTest) = 3 Or VarType(objToTest) = 17 Or VarType(objToTest) = 20
                     boolFunctionReturn = True
                 End If
             End If
