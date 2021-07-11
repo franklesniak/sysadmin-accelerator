@@ -22,7 +22,7 @@ Function GetBIOSVersionString(ByRef strBIOSVersion)
     '       ' stored in strBIOSVersion
     '   End If
     '
-    ' Version: 1.0.20210707.0
+    ' Version: 1.0.20210711.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -70,7 +70,8 @@ Function GetBIOSVersionString(ByRef strBIOSVersion)
         ' At least one Win32_BIOS instance was retrieved successfully
         intFunctionReturn = GetBIOSVersionStringUsingBIOSInstances(strResult, arrBIOSInstances)
         If intFunctionReturn >= 0 Then
-            ' The computer serial number was retrieved successfully and is stored in strResult
+            ' The computer's BIOS version string was retrieved successfully and is stored in
+            ' strResult
             strBIOSVersion = strResult
         End If
     End If
