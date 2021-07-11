@@ -1,29 +1,28 @@
-Function GetBIOSInstances(ByRef arrBIOSInstances)
+Function GetBIOSVersionString(ByRef strBIOSVersion)
     'region FunctionMetadata ####################################################
-    ' This function retrieves the Win32_BIOS instances and stores them in arrBIOSInstances.
+    ' This function obtains the computer's systems management BIOS version number in string
+    ' format, if available and configured by the computer's manufacturer.
     '
-    ' The function takes one positional argument (arrBIOSInstances), which is populated upon
-    ' success with the BIOS instances returned from WMI of type Win32_BIOS
+    ' The function takes one positional argument (strBIOSVersion), which is populated upon
+    ' success with a string containing the computer's systems management BIOS version number in
+    ' string format. The systems management BIOS version number is equivalent to the Win32_BIOS
+    ' system property SMBIOSBIOSVersion
     '
-    ' The function returns 0 if Win32_BIOS instances were retrieved successfully, and
-    ' there was one BIOS instance (as expected). If no Win32_BIOS objects could be retrieved,
-    ' then the function returns a negative number. If there are unexpectedly multiple
-    ' instances of Win32_BIOS, then the function returns a positive number equal to the number
-    ' of WMI instances retrieved minus one.
+    ' The function returns a 0 if the systems management BIOS version string was obtained
+    ' successfully. It returns a negative integer if an error occurred retrieving it. Finally,
+    ' it returns a positive integer if the systems management BIOS version string was obtained,
+    ' but multiple BIOS instances were present that contained data for the systems management
+    ' BIOS version string. When this happens, only the first Win32_BIOS instance containing
+    ' data for the systems management BIOS version string is used.
     '
     ' Example:
-    '   intReturnCode = GetBIOSInstances(arrBIOSInstances)
-    '   If intReturnCode = 0 Then
-    '       ' The Win32_BIOS instance was retrieved successfully and is available
-    '       ' at arrBIOSInstances.ItemIndex(0)
-    '   ElseIf intReturnCode > 0 Then
-    '       ' More than one Win32_BIOS instance was retrieved, which is
-    '       ' unexpected.
-    '   Else
-    '       ' An error occurred and no Win32_BIOS instances were retrieved
+    '   intReturnCode = GetBIOSVersionString(strBIOSVersion)
+    '   If intReturnCode >= 0 Then
+    '       ' The systems management BIOS version string was retrieved successfully and is
+    '       ' stored in strBIOSVersion
     '   End If
     '
-    ' Version: 1.0.20210624.0
+    ' Version: 1.0.20210707.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -56,26 +55,25 @@ Function GetBIOSInstances(ByRef arrBIOSInstances)
     'endregion Acknowledgements ####################################################
 
     'region DependsOn ####################################################
-    ' ConnectLocalWMINamespace()
-    ' GetBIOSInstancesUsingWMINamespace()
+    ' GetBIOSInstances()
+    ' GetBIOSVersionStringUsingBIOSInstances()
     'endregion DependsOn ####################################################
 
     Dim intFunctionReturn
-    Dim intReturnMultiplier
-    Dim intReturnCode
-    Dim objSWbemServicesWMINamespace
+    Dim arrBIOSInstances
+    Dim strResult
 
     intFunctionReturn = 0
-    intReturnMultiplier = 8
 
-    intReturnCode = ConnectLocalWMINamespace(objSWbemServicesWMINamespace, Null, Null)
-    If intReturnCode <> 0 Then
-        intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
-    Else
-        intReturnCode = GetBIOSInstancesUsingWMINamespace(arrBIOSInstances, objSWbemServicesWMINamespace)
-        intReturnMultiplier = 1
-        intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
+    intFunctionReturn = GetBIOSInstances(arrBIOSInstances)
+    If intFunctionReturn >= 0 Then
+        ' At least one Win32_BIOS instance was retrieved successfully
+        intFunctionReturn = GetBIOSVersionStringUsingBIOSInstances(strResult, arrBIOSInstances)
+        If intFunctionReturn >= 0 Then
+            ' The computer serial number was retrieved successfully and is stored in strResult
+            strBIOSVersion = strResult
+        End If
     End If
     
-    GetBIOSInstances = intFunctionReturn
+    GetBIOSVersionString = intFunctionReturn
 End Function

@@ -1,29 +1,30 @@
-Function GetBIOSInstances(ByRef arrBIOSInstances)
+Function GetTimeZoneInstances(ByRef arrTimeZoneInstances)
     'region FunctionMetadata ####################################################
-    ' This function retrieves the Win32_BIOS instances and stores them in arrBIOSInstances.
+    ' This function retrieves the Win32_TimeZone instances and stores them in
+    ' arrTimeZoneInstances.
     '
-    ' The function takes one positional argument (arrBIOSInstances), which is populated upon
-    ' success with the BIOS instances returned from WMI of type Win32_BIOS
+    ' The function takes one positional argument (arrTimeZoneInstances), which is populated
+    ' upon success with the time zone instances returned from WMI of type Win32_TimeZone
     '
-    ' The function returns 0 if Win32_BIOS instances were retrieved successfully, and
-    ' there was one BIOS instance (as expected). If no Win32_BIOS objects could be retrieved,
-    ' then the function returns a negative number. If there are unexpectedly multiple
-    ' instances of Win32_BIOS, then the function returns a positive number equal to the number
-    ' of WMI instances retrieved minus one.
+    ' The function returns 0 if Win32_TimeZone instances were retrieved successfully, and
+    ' there was one time zone instance (as expected). If no Win32_TimeZone objects could be
+    ' retrieved, then the function returns a negative number. If there are unexpectedly
+    ' multiple instances of Win32_TimeZone, then the function returns a positive number equal
+    ' to the number of WMI instances retrieved minus one.
     '
     ' Example:
-    '   intReturnCode = GetBIOSInstances(arrBIOSInstances)
+    '   intReturnCode = GetTimeZoneInstances(arrTimeZoneInstances)
     '   If intReturnCode = 0 Then
-    '       ' The Win32_BIOS instance was retrieved successfully and is available
-    '       ' at arrBIOSInstances.ItemIndex(0)
+    '       ' The Win32_TimeZone instance was retrieved successfully and is available
+    '       ' at arrTimeZoneInstances.ItemIndex(0)
     '   ElseIf intReturnCode > 0 Then
-    '       ' More than one Win32_BIOS instance was retrieved, which is
+    '       ' More than one Win32_TimeZone instance was retrieved, which is
     '       ' unexpected.
     '   Else
-    '       ' An error occurred and no Win32_BIOS instances were retrieved
+    '       ' An error occurred and no Win32_TimeZone instances were retrieved
     '   End If
     '
-    ' Version: 1.0.20210624.0
+    ' Version: 1.0.20210708.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -57,7 +58,7 @@ Function GetBIOSInstances(ByRef arrBIOSInstances)
 
     'region DependsOn ####################################################
     ' ConnectLocalWMINamespace()
-    ' GetBIOSInstancesUsingWMINamespace()
+    ' GetTimeZoneInstancesUsingWMINamespace()
     'endregion DependsOn ####################################################
 
     Dim intFunctionReturn
@@ -72,10 +73,10 @@ Function GetBIOSInstances(ByRef arrBIOSInstances)
     If intReturnCode <> 0 Then
         intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
     Else
-        intReturnCode = GetBIOSInstancesUsingWMINamespace(arrBIOSInstances, objSWbemServicesWMINamespace)
+        intReturnCode = GetTimeZoneInstancesUsingWMINamespace(arrTimeZoneInstances, objSWbemServicesWMINamespace)
         intReturnMultiplier = 1
         intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
     End If
     
-    GetBIOSInstances = intFunctionReturn
+    GetTimeZoneInstances = intFunctionReturn
 End Function
