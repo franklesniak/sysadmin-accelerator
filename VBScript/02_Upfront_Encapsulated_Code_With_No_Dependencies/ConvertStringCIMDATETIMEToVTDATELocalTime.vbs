@@ -42,7 +42,7 @@ Function ConvertStringCIMDATETIMEToVTDATELocalTime(ByRef datetimeOutput, ByVal s
     '       ' en-US culture/date format, datetimeOutput is 4/21/2021 1:00:00 AM
     '   End If
     '
-    ' Version: 1.0.20210710.0
+    ' Version: 1.0.20210710.1
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -74,9 +74,9 @@ Function ConvertStringCIMDATETIMEToVTDATELocalTime(ByRef datetimeOutput, ByVal s
     ' TestObjectIsStringContainingData()
     ' TestObjectIsDateTimeContainingData()
     ' GetComputerSystemInstances()
-    ' GetCurrentEffectiveTimeZoneUTCOffsetInMinutesUsingComputerSystemInstances()
     ' GetTimeZoneInstances()
-    ' GetCurrentEffectiveTimeZoneUTCOffsetInMinutesUsingTimeZoneInstances()
+    ' GetCurrentEffectiveTimeZoneUTCOffsetInMinutesUsingComputerSystemAndTimeZoneInstances()
+    ' GetUTCOffsetForDateInLocalTimeZoneUsingTimeZoneInstances()
     ' TestObjectForData()
     'endregion DependsOn ####################################################
 
