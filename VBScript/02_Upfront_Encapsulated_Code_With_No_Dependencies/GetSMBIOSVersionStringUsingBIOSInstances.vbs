@@ -1,4 +1,4 @@
-Function GetBIOSVersionStringUsingBIOSInstances(ByRef strBIOSVersion, ByVal arrBIOSInstances)
+Function GetSMBIOSVersionStringUsingBIOSInstances(ByRef strSMBIOSVersion, ByVal arrBIOSInstances)
     'region FunctionMetadata ####################################################
     ' Assuming that arrBIOSInstances represents an array / collection of the available BIOS
     ' instances (of type Win32_BIOS), this function obtains the computer's systems management
@@ -9,7 +9,7 @@ Function GetBIOSVersionStringUsingBIOSInstances(ByRef strBIOSVersion, ByVal arrB
     ' systems return a version like "A23"
     '
     ' The function takes two positional arguments:
-    '  - The first argument (strBIOSVersion) is populated upon success with a string
+    '  - The first argument (strSMBIOSVersion) is populated upon success with a string
     '    containing the computer's systems management BIOS version number in string format.
     '    The systems management BIOS version number is equivalent to the Win32_BIOS system
     '    property SMBIOSBIOSVersion
@@ -27,14 +27,14 @@ Function GetBIOSVersionStringUsingBIOSInstances(ByRef strBIOSVersion, ByVal arrB
     '   intReturnCode = GetBIOSInstances(arrBIOSInstances)
     '   If intReturnCode >= 0 Then
     '       ' At least one Win32_BIOS instance was retrieved successfully
-    '       intReturnCode = GetBIOSVersionStringUsingBIOSInstances(strBIOSVersion, arrBIOSInstances)
+    '       intReturnCode = GetSMBIOSVersionStringUsingBIOSInstances(strSMBIOSVersion, arrBIOSInstances)
     '       If intReturnCode >= 0 Then
     '           ' The systems management BIOS version string was retrieved successfully and is
-    '           ' stored in strBIOSVersion
+    '           ' stored in strSMBIOSVersion
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210706.0
+    ' Version: 2.0.20210711.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -152,8 +152,8 @@ Function GetBIOSVersionStringUsingBIOSInstances(ByRef strBIOSVersion, ByVal arrB
     End If
 
     If intFunctionReturn >= 0 Then
-        strBIOSVersion = strResultToReturn
+        strSMBIOSVersion = strResultToReturn
     End If
     
-    GetBIOSVersionStringUsingBIOSInstances = intFunctionReturn
+    GetSMBIOSVersionStringUsingBIOSInstances = intFunctionReturn
 End Function

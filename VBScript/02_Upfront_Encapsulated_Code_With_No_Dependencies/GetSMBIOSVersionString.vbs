@@ -1,9 +1,9 @@
-Function GetBIOSVersionString(ByRef strBIOSVersion)
+Function GetSMBIOSVersionString(ByRef strSMBIOSVersion)
     'region FunctionMetadata ####################################################
     ' This function obtains the computer's systems management BIOS version number in string
     ' format, if available and configured by the computer's manufacturer.
     '
-    ' The function takes one positional argument (strBIOSVersion), which is populated upon
+    ' The function takes one positional argument (strSMBIOSVersion), which is populated upon
     ' success with a string containing the computer's systems management BIOS version number in
     ' string format. The systems management BIOS version number is equivalent to the Win32_BIOS
     ' system property SMBIOSBIOSVersion
@@ -16,13 +16,13 @@ Function GetBIOSVersionString(ByRef strBIOSVersion)
     ' data for the systems management BIOS version string is used.
     '
     ' Example:
-    '   intReturnCode = GetBIOSVersionString(strBIOSVersion)
+    '   intReturnCode = GetSMBIOSVersionString(strSMBIOSVersion)
     '   If intReturnCode >= 0 Then
     '       ' The systems management BIOS version string was retrieved successfully and is
-    '       ' stored in strBIOSVersion
+    '       ' stored in strSMBIOSVersion
     '   End If
     '
-    ' Version: 1.0.20210711.0
+    ' Version: 2.0.20210711.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -56,7 +56,7 @@ Function GetBIOSVersionString(ByRef strBIOSVersion)
 
     'region DependsOn ####################################################
     ' GetBIOSInstances()
-    ' GetBIOSVersionStringUsingBIOSInstances()
+    ' GetSMBIOSVersionStringUsingBIOSInstances()
     'endregion DependsOn ####################################################
 
     Dim intFunctionReturn
@@ -68,13 +68,13 @@ Function GetBIOSVersionString(ByRef strBIOSVersion)
     intFunctionReturn = GetBIOSInstances(arrBIOSInstances)
     If intFunctionReturn >= 0 Then
         ' At least one Win32_BIOS instance was retrieved successfully
-        intFunctionReturn = GetBIOSVersionStringUsingBIOSInstances(strResult, arrBIOSInstances)
+        intFunctionReturn = GetSMBIOSVersionStringUsingBIOSInstances(strResult, arrBIOSInstances)
         If intFunctionReturn >= 0 Then
             ' The computer's BIOS version string was retrieved successfully and is stored in
             ' strResult
-            strBIOSVersion = strResult
+            strSMBIOSVersion = strResult
         End If
     End If
     
-    GetBIOSVersionString = intFunctionReturn
+    GetSMBIOSVersionString = intFunctionReturn
 End Function
