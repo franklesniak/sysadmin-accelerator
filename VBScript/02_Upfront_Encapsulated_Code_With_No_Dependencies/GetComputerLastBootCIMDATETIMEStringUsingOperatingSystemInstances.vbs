@@ -44,7 +44,7 @@ Function GetComputerLastBootCIMDATETIMEStringUsingOperatingSystemInstances(ByRef
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210722.0
+    ' Version: 1.0.20210723.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
