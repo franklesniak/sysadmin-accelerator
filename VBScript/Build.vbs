@@ -377,14 +377,22 @@ Else
                     If objFileSystemObject.FolderExists(strScriptDir & strSubfolderName & "\") Then
                         Set objFolder = objFileSystemObject.GetFolder(strScriptDir & strSubfolderName & "\")
                         Set objADODBRecordSet = CreateObject("ADODB.RecordSet")
-                        objADODBRecordSet.Fields.Append "FilePath", adVarChar, 255
+                        objADODBRecordSet.Fields.Append "FilePath", adVarChar, 300
                         objADODBRecordSet.CursorType = adOpenStatic
                         objADODBRecordSet.Open
                         Set arrFiles = objFolder.Files
                         For Each objFile in arrFiles
+                            On Error Resume Next
                             objADODBRecordSet.AddNew "FilePath", objFile.Path
                             'objADODBRecordSet.Fields(0) = objFile.Path
                             objADODBRecordSet.Update
+                            If Err Then
+                                On Error Goto 0
+                                Err.Clear
+                                WScript.Echo("An error occurred processing the file: " & objFile.Path)
+                            Else
+                                On Error Goto 0
+                            End If
                         Next
                         objADODBRecordSet.Sort = "FilePath"
                         If objADODBRecordSet.BOF = False Then objADODBRecordSet.MoveFirst()
