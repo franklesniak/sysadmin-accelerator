@@ -63,7 +63,7 @@ Function ConvertStringCIMDATETIMEToVTDATELocalTimeUsingComputerSystemAndTimeZone
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210711.1
+    ' Version: 1.0.20210809.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -240,7 +240,7 @@ Function ConvertStringCIMDATETIMEToVTDATELocalTimeUsingComputerSystemAndTimeZone
             End If
 
             ' Convert the hour
-            If boolErrorOccurred = False Then
+            If boolErrorOccurred = False And boolMinorErrorOccurred = False Then
                 On Error Resume Next
                 strTemp = Mid(strCIMDATETIMEInput, 9, 2)
                 If Err Then
@@ -263,7 +263,7 @@ Function ConvertStringCIMDATETIMEToVTDATELocalTimeUsingComputerSystemAndTimeZone
             End If
 
             ' Convert the minute
-            If boolErrorOccurred = False Then
+            If boolErrorOccurred = False And boolMinorErrorOccurred = False Then
                 On Error Resume Next
                 strTemp = Mid(strCIMDATETIMEInput, 11, 2)
                 If Err Then
@@ -286,7 +286,7 @@ Function ConvertStringCIMDATETIMEToVTDATELocalTimeUsingComputerSystemAndTimeZone
             End If
 
             ' Convert the second
-            If boolErrorOccurred = False Then
+            If boolErrorOccurred = False And boolMinorErrorOccurred = False Then
                 On Error Resume Next
                 strTemp = Mid(strCIMDATETIMEInput, 13, 2)
                 If Err Then
