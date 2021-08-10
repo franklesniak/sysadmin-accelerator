@@ -19,7 +19,7 @@ Function ConvertVTDATELocalTimeToISO8601ExtendedFormatStringUsingComputerSystemA
     '       Win32_TimeZone
     '
     ' The function returns 0 or a positive number if the VBScript-native datetime object
-    ' (VT_DATETIME) was converted to a ISO 2601-formatted string. A return of 1 indicates a
+    ' (VT_DATETIME) was converted to a ISO 8601-formatted string. A return of 1 indicates a
     ' warning condition in which the local computer's time zone adjustment could not be
     ' determined. It returns a negative number if an error occurred
     '
@@ -36,7 +36,7 @@ Function ConvertVTDATELocalTimeToISO8601ExtendedFormatStringUsingComputerSystemA
     '       ' strISO8601Output is "2021-08-05T13:00:00-05:00"
     '   End If
     '
-    ' Version: 1.0.20210809.0
+    ' Version: 1.0.20210810.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
