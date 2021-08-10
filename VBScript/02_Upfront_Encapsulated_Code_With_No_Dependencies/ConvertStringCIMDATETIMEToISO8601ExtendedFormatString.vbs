@@ -38,7 +38,7 @@ Function ConvertCIMDATETIMEToISO8601ExtendedFormatString(ByRef strISO8601Output,
     '       ' strISO8601Output is "2021-04-21T00:00:00-06:00"
     '   End If
     '
-    ' Version: 1.0.20210809.0
+    ' Version: 1.0.20210809.1
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
@@ -78,7 +78,6 @@ Function ConvertCIMDATETIMEToISO8601ExtendedFormatString(ByRef strISO8601Output,
     Dim intReturnCode
     Dim strISO8601OutputToReturn
 
-    'Dim strTemp
     Dim intTemp
     Dim intResult
     Dim boolResult
@@ -105,7 +104,6 @@ Function ConvertCIMDATETIMEToISO8601ExtendedFormatString(ByRef strISO8601Output,
     Dim boolErrorOccurred
     Dim boolMinorErrorOccurred
     Dim intSpecifiedUTCOffset
-    'Dim intLocalComputerTimeZoneUTCOffsetAtSpecifiedDate
 
     intFunctionReturn = 0
     intReturnMultiplier = 1
