@@ -398,17 +398,25 @@ Else
                         If objADODBRecordSet.BOF = False Then objADODBRecordSet.MoveFirst()
                         Do Until objADODBRecordSet.EOF
                             strTextFile = ""
-                            ' WScript.Echo objADODBRecordSet.Fields("FilePath")
-                            Set objTextStreamFile = objFileSystemObject.OpenTextFile(objADODBRecordSet.Fields("FilePath"), ForReading, False, ASCII)
                             On Error Resume Next
-                            strTextFile = objTextStreamFile.ReadAll
+                            Set objTextStreamFile = objFileSystemObject.OpenTextFile(objADODBRecordSet.Fields("FilePath"), ForReading, False, ASCII)
                             If Err Then
                                 On Error Goto 0
+                                Err.Clear
                                 strTextFile = ""
+                                WScript.Echo ("An error occurred OPENING text file: " & objADODBRecordSet.Fields("FilePath"))
                             Else
-                                On Error Goto 0
+                                strTextFile = objTextStreamFile.ReadAll
+                                If Err Then
+                                    On Error Goto 0
+                                    Err.Clear
+                                    strTextFile = ""
+                                    WScript.Echo ("An error occurred READING text file: " & objADODBRecordSet.Fields("FilePath"))
+                                Else
+                                    objTextStreamFile.Close
+                                    On Error Goto 0
+                                End If
                             End If
-                            objTextStreamFile.Close
                             If strTextFile <> "" Then
                                 If strOutput = "" Then
                                     strOutput = strTextFile
