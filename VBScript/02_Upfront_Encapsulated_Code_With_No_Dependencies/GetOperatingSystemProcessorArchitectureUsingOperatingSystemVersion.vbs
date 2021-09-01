@@ -177,17 +177,17 @@ Function GetOperatingSystemProcessorArchitectureUsingOperatingSystemVersion(ByRe
 
     If intFunctionReturn < 0 Then
         ' TODO: Review and update once GetWindowsRegistryValueUsingOperatingSystemVersion() is fully written
-        intReturnCode = GetWindowsRegistryValueUsingOperatingSystemVersion(objRegistryValue, "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment", "PROCESSOR_ARCHITECTURE", "String", Null, Null, strOperatingSystemVersion)
-        If intReturnCode < 0 Then
-            intFunctionReturn = intFunctionReturn + (-1 * intReturnMultiplier)
-        Else
-            If TestObjectForData(objRegistryValue) = False Then
-                intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier)
-            Else
-                strWorkingOperatingSystemProcessorArchitecture = objRegistryValue
-                intFunctionReturn = 1
-            End If
-        End If
+        ' intReturnCode = GetWindowsRegistryValueUsingOperatingSystemVersion(objRegistryValue, "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment", "PROCESSOR_ARCHITECTURE", "String", Null, Null, strOperatingSystemVersion)
+        ' If intReturnCode < 0 Then
+        '     intFunctionReturn = intFunctionReturn + (-1 * intReturnMultiplier)
+        ' Else
+        '     If TestObjectForData(objRegistryValue) = False Then
+        '         intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier)
+        '     Else
+        '         strWorkingOperatingSystemProcessorArchitecture = objRegistryValue
+        '         intFunctionReturn = 1
+        '     End If
+        ' End If
     End If
 
     ' #########################################################################################
