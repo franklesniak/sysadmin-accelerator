@@ -47,7 +47,7 @@ Function GetOperatingSystemProcessorArchitectureUsingOperatingSystemVersion(ByRe
     ' ** = At the time of writing, Microsoft is rumored to be working on an ARM version of
     '      Windows Server
     '
-    ' Version: 0.1.20210614.0
+    ' Version: 0.1.20210901.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
