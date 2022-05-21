@@ -9,6 +9,11 @@ function Get-OutOfDateModules {
     #
     # This function takes no input.
     #
+    # The function returns an array containing the module updates that are available in
+    # the configured PSRepositor(ies). If no updates are available, an empty array
+    # (@()) is returned. Additonally, this function writes informational messages to
+    # the verbose pipeline.
+    #
     # Example usage:
     # $arrModulesToInstall = Get-OutOfDateModules
     #
