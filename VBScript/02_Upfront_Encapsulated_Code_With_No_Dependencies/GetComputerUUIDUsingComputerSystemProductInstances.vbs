@@ -26,7 +26,7 @@ Function GetComputerUUIDUsingComputerSystemProductInstances(ByRef strComputerUUI
     '       ' successfully
     '       intReturnCode = GetComputerUUIDUsingComputerSystemProductInstances(strComputerUUID, arrComputerSystemProductInstances)
     '       If intReturnCode >= 0 Then
-    '           ' The computer's UUID  was retrieved successfully and is stored in
+    '           ' The computer's UUID was retrieved successfully and is stored in
     '           ' strComputerUUID
     '       End If
     '   End If
