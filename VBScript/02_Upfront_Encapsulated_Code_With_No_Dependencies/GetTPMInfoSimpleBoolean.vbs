@@ -1,5 +1,5 @@
 Function GetTPMInfoSimpleBoolean(ByRef boolTPMPresent, ByRef boolEnabledTPMPresent, ByRef boolActivatedTPMPresent, ByRef boolReadyTPMPresent)
-    'region FunctionMetadata ####################################################
+    'region FunctionMetadata #######################################################
     ' This function retrieves the most commonly needed TPM information, namely:
     '  - Whether a TPM was present
     '  - If a TPM was present, and if this script was run with elevated privileges:
@@ -7,44 +7,46 @@ Function GetTPMInfoSimpleBoolean(ByRef boolTPMPresent, ByRef boolEnabledTPMPrese
     '     - Whether at least one TPM was activated
     '     - Whether at least one TPM was ready
     '
-    ' **NOTE**: If this function is called in a script run without elevated privileges, it will
-    '           return potentially misleading results (see definitions for "False" results,
-    '           below). To cover the non-admin rights scenario better, use GetTPMInfo() instead
+    ' **NOTE**: If this function is called in a script run without elevated privileges,
+    '           it will return potentially misleading results (see definitions for
+    '           "False" results, below). To cover the non-admin rights scenario better,
+    '           use GetTPMInfo() instead
     '
     ' The function takes four positional arguments:
-    '  - The first argument (boolTPMPresent) is boolean value that will be populated with
-    '    either:
+    '  - The first argument (boolTPMPresent) is boolean value that will be populated
+    '    with either:
     '         True = a TPM was present
-    '         False = either a TPM was not present, or it could not be determined whether a
-    '             TPM was present. The latter is usually caused by restrictions that prevent
-    '             access to WMI
-    '  - The second argument (boolEnabledTPMPresent) is a boolean value that will be populated
-    '    with either:
+    '         False = either a TPM was not present, or it could not be determined
+    '             whether a TPM was present. The latter is usually caused by
+    '             restrictions that prevent access to WMI
+    '  - The second argument (boolEnabledTPMPresent) is a boolean value that will be
+    '    populated with either:
     '         True = at least one enabled TPM was present
-    '         False = either no enabled TPM was present, or it could not be determined whether
-    '             an enabled TPM was present. The latter is usually caused by the script being
-    '             run without elevated permissions
-    '  - The third argument (boolActivatedTPMPresent) is a boolean value that will be populated
-    '    with either:
+    '         False = either no enabled TPM was present, or it could not be determined
+    '             whether an enabled TPM was present. The latter is usually caused by
+    '             the script being run without elevated permissions
+    '  - The third argument (boolActivatedTPMPresent) is a boolean value that will be
+    '    populated with either:
     '         True = at least one activated TPM was present
-    '         False = either no activated TPM was present, or it could not be determined
-    '             whether an activated TPM was present. The latter is usually caused by the
-    '             script being run without elevated permissions
-    '  - The fourth argument (boolReadyTPMPresent) is a boolean value that will be populated
-    '    with either:
+    '         False = either no activated TPM was present, or it could not be
+    '             determined whether an activated TPM was present. The latter is
+    '             usually caused by the script being run without elevated permissions
+    '  - The fourth argument (boolReadyTPMPresent) is a boolean value that will be
+    '    populated with either:
     '         True = at least one ready TPM was present
-    '         False = either no ready TPM was present, or it could not be determined whether a
-    '             ready TPM was present. The latter is usually caused by the script being run
-    '             without elevated permissions
+    '         False = either no ready TPM was present, or it could not be determined
+    '             whether a ready TPM was present. The latter is usually caused by the
+    '             script being run without elevated permissions
     '
-    ' The function returns a 0 if all TPM information was retrieved successfully. It returns a
-    ' positive integer if it was determined whether a TPM was present, but the TPM(s)' enabled
-    ' status, activation status, or readiness could not be determined. In other words, if the
-    ' function returned 0, then a False result for the second, third, or fourth argument should
-    ' be regarded as no TPM present. However, if the function returned a positive integer, then
-    ' a False result in the second, third, or fourth argument should be regarded as "the result
-    ' could not be determined". The function returns a negative integer if an error occurred
-    ' and no information could be determined.
+    ' The function returns a 0 if all TPM information was retrieved successfully. It
+    ' returns a positive integer if it was determined whether a TPM was present, but
+    ' the TPM(s)' enabled status, activation status, or readiness could not be
+    ' determined. In other words, if the function returned 0, then a False result for
+    ' the second, third, or fourth argument should be regarded as no TPM present.
+    ' However, if the function returned a positive integer, then a False result in the
+    ' second, third, or fourth argument should be regarded as "the result could not be
+    ' determined". The function returns a negative integer if an error occurred and no
+    ' information could be determined.
     '
     ' Example:
     '   intReturnCode = GetTPMInfoSimpleBoolean(boolTPMPresent, boolEnabledTPMPresent, boolActivatedTPMPresent, boolReadyTPMPresent)
@@ -53,45 +55,46 @@ Function GetTPMInfoSimpleBoolean(ByRef boolTPMPresent, ByRef boolEnabledTPMPrese
     '   End If
     '   If intReturnCode = 0 Then
     '       ' boolEnabledTPMPresent, boolActivatedTPMPresent, and
-    '       ' boolReadyTPMPresent are populated as expected
+    '       ' boolReadyTPMPresent are also populated as expected
     '   End If
     '
-    ' Version: 1.0.20210617.0
-    'endregion FunctionMetadata ####################################################
+    ' Version: 1.0.20210617.1
+    'endregion FunctionMetadata #######################################################
 
-    'region License ####################################################
+    'region License ################################################################
     ' Copyright 2021 Frank Lesniak
     '
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
-    ' software and associated documentation files (the "Software"), to deal in the Software
-    ' without restriction, including without limitation the rights to use, copy, modify, merge,
-    ' publish, distribute, sublicense, and/or sell copies of the Software, and to permit
-    ' persons to whom the Software is furnished to do so, subject to the following conditions:
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy of
+    ' this software and associated documentation files (the "Software"), to deal in the
+    ' Software without restriction, including without limitation the rights to use,
+    ' copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+    ' Software, and to permit persons to whom the Software is furnished to do so,
+    ' subject to the following conditions:
     '
-    ' The above copyright notice and this permission notice shall be included in all copies or
-    ' substantial portions of the Software.
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
     '
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-    ' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-    ' PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-    ' FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-    ' OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-    ' DEALINGS IN THE SOFTWARE.
-    'endregion License ####################################################
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+    ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+    ' COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+    ' AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    ' WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    'endregion License ################################################################
 
-    'region DownloadLocationNotice ####################################################
-    ' The most up-to-date version of this script can be found on the author's GitHub repository
-    ' at https://github.com/franklesniak/sysadmin-accelerator
-    'endregion DownloadLocationNotice ####################################################
+    'region DownloadLocationNotice #################################################
+    ' The most up-to-date version of this script can be found on the author's GitHub
+    ' repository at https://github.com/franklesniak/sysadmin-accelerator
+    'endregion DownloadLocationNotice #################################################
 
-    'region Acknowledgements ####################################################
-    ' Microsoft and Sven Aelterman, for providing ZTICheckForTPM/ZTICheckForTPM_v2, which
-    ' inspired this approach.
-    'endregion Acknowledgements ####################################################
+    'region Acknowledgements #######################################################
+    ' Microsoft and Sven Aelterman, for providing ZTICheckForTPM/ZTICheckForTPM_v2,
+    ' which inspired this approach.
+    'endregion Acknowledgements #######################################################
 
-    'region DependsOn ####################################################
+    'region DependsOn ##############################################################
     ' GetTPMInfo()
-    'endregion DependsOn ####################################################
+    'endregion DependsOn ##############################################################
 
     Dim intFunctionReturn
     Dim intPreliminaryTriStateTPMPresent

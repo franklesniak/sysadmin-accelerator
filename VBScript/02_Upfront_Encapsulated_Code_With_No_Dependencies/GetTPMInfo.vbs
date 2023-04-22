@@ -1,5 +1,5 @@
 Function GetTPMInfo(ByRef intTriStateTPMPresent, ByRef intTriStateEnabledTPMPresent, ByRef intTriStateActivatedTPMPresent, ByRef intTriStateReadyTPMPresent)
-    'region FunctionMetadata ####################################################
+    'region FunctionMetadata #######################################################
     ' This function retrieves the most commonly needed TPM information, namely:
     '  - Whether a TPM was present
     '  - If a TPM was present, and if this script was run with elevated privileges:
@@ -8,35 +8,38 @@ Function GetTPMInfo(ByRef intTriStateTPMPresent, ByRef intTriStateEnabledTPMPres
     '     - Whether at least one TPM was ready
     '
     ' The function takes four positional arguments:
-    '  - The first argument (intTriStateTPMPresent) is an integer that will be populated with
-    '    one of three values:
+    '  - The first argument (intTriStateTPMPresent) is an integer that will be
+    '    populated with one of three values:
     '        -1 = a TPM was present
     '         0 = a TPM was not present
-    '         1 = it could not be determined whether a TPM was present. This is usually caused
-    '             by restrictions that prevent access to WMI
+    '         1 = it could not be determined whether a TPM was present. This is usually
+    '             caused by restrictions that prevent access to WMI
     '  - The second argument (intTriStateEnabledTPMPresent) is an integer that will be
     '    populated with one of three values:
     '        -1 = at least one enabled TPM was present
     '         0 = no enabled TPM was present
-    '         1 = it could not be determined whether an enabled TPM was present. This is
-    '             usually caused by the script being run without elevated permissions
+    '         1 = it could not be determined whether an enabled TPM was present. This
+    '             is usually caused by the script being run without elevated
+    '             permissions
     '  - The third argument (intTriStateActivatedTPMPresent) is an integer that will be
     '    populated with one of three values:
     '        -1 = at least one activated TPM was present
     '         0 = no activated TPM was present
-    '         1 = it could not be determined whether an activated TPM was present. This is
-    '             usually caused by the script being run without elevated permissions
-    '  - The fourth argument (intTriStateReadyTPMPresent) is an integer that will be populated
-    '    with one of three values:
+    '         1 = it could not be determined whether an activated TPM was present. This
+    '             is usually caused by the script being run without elevated
+    '             permissions
+    '  - The fourth argument (intTriStateReadyTPMPresent) is an integer that will be
+    '    populated with one of three values:
     '        -1 = at least one ready TPM was present
     '         0 = no ready TPM was present
     '         1 = it could not be determined whether a ready TPM was present. This is
     '             usually caused by the script being run without elevated permissions
     '
     ' The function returns a 0 if all TPM info was retrieved successfully. It returns a
-    ' positive integer if it was determined whether a TPM was present, but the TPM(s)' enabled
-    ' status, activation status, or readiness could not be determined. The function returns a
-    ' negative integer if an error occurred and no information could be determined.
+    ' positive integer if it was determined whether a TPM was present, but the TPM(s)'
+    ' enabled status, activation status, or readiness could not be determined. The
+    ' function returns a negative integer if an error occurred and no information could
+    ' be determined.
     '
     ' Example:
     '   intReturnCode = GetTPMInfo(intTriStateTPMPresent, intTriStateEnabledTPMPresent, intTriStateActivatedTPMPresent, intTriStateReadyTPMPresent)
@@ -48,40 +51,41 @@ Function GetTPMInfo(ByRef intTriStateTPMPresent, ByRef intTriStateEnabledTPMPres
     '       ' intTriStateReadyTPMPresent are populated as expected
     '   End If
     '
-    ' Version: 1.0.20210617.0
-    'endregion FunctionMetadata ####################################################
+    ' Version: 1.1.20230422.0
+    'endregion FunctionMetadata #######################################################
 
-    'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    'region License ################################################################
+    ' Copyright 2023 Frank Lesniak
     '
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
-    ' software and associated documentation files (the "Software"), to deal in the Software
-    ' without restriction, including without limitation the rights to use, copy, modify, merge,
-    ' publish, distribute, sublicense, and/or sell copies of the Software, and to permit
-    ' persons to whom the Software is furnished to do so, subject to the following conditions:
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy of
+    ' this software and associated documentation files (the "Software"), to deal in the
+    ' Software without restriction, including without limitation the rights to use,
+    ' copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+    ' Software, and to permit persons to whom the Software is furnished to do so,
+    ' subject to the following conditions:
     '
-    ' The above copyright notice and this permission notice shall be included in all copies or
-    ' substantial portions of the Software.
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
     '
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-    ' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-    ' PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-    ' FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-    ' OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-    ' DEALINGS IN THE SOFTWARE.
-    'endregion License ####################################################
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+    ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+    ' COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+    ' AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    ' WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    'endregion License ################################################################
 
-    'region DownloadLocationNotice ####################################################
-    ' The most up-to-date version of this script can be found on the author's GitHub repository
-    ' at https://github.com/franklesniak/sysadmin-accelerator
-    'endregion DownloadLocationNotice ####################################################
+    'region DownloadLocationNotice #################################################
+    ' The most up-to-date version of this script can be found on the author's GitHub
+    ' repository at https://github.com/franklesniak/sysadmin-accelerator
+    'endregion DownloadLocationNotice #################################################
 
-    'region Acknowledgements ####################################################
-    ' Microsoft and Sven Aelterman, for providing ZTICheckForTPM/ZTICheckForTPM_v2, which
-    ' inspired this approach.
-    'endregion Acknowledgements ####################################################
+    'region Acknowledgements #######################################################
+    ' Microsoft and Sven Aelterman, for providing ZTICheckForTPM/ZTICheckForTPM_v2,
+    ' which inspired this approach.
+    'endregion Acknowledgements #######################################################
 
-    'region DependsOn ####################################################
+    'region DependsOn ##############################################################
     ' ConnectLocalWMINamespace()
     ' TestTPMPresentUsingCIMv2WMINamespace()
     ' TestObjectForData()
@@ -90,7 +94,7 @@ Function GetTPMInfo(ByRef intTriStateTPMPresent, ByRef intTriStateEnabledTPMPres
     ' TestTPMInstancesForEnabledTPMUsingTPMInstances()
     ' TestTPMInstancesForActivatedTPMUsingTPMInstances()
     ' TestTPMInstancesForReadyTPMUsingTPMInstances()
-    'endregion DependsOn ####################################################
+    'endregion DependsOn ##############################################################
 
     Dim intFunctionReturn
     Dim intReturnMultiplier
@@ -217,73 +221,85 @@ Function GetTPMInfo(ByRef intTriStateTPMPresent, ByRef intTriStateEnabledTPMPres
         ' No error occurred yet
         intTriStateTPMPresent = intPreliminaryTriStateTPMPresent
 
-        If intTriStateTPMNamespaceInstancesFailed <> -1 Then
-            ' Use of the TPM WMI namespace has not already failed
-            If intTriStateTPMNamespaceInstancesFailed = 1 Or TestObjectForData(arrTPMWMINamespaceInstances) = False Then
-                ' TPM namespace instances are not yet retrieved
-                intReturnMultiplier = intReturnMultiplier * 16
-                intReturnCode = GetTPMInstances(arrTPMWMINamespaceInstances)
-                If intReturnCode < 0 Then
-                    intTriStateTPMNamespaceInstancesFailed = -1
-                    intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
-                ElseIf intReturnCode = 0 Then
-                    intTriStateTPMNamespaceInstancesFailed = -1
-                Else
-                    intTriStateTPMNamespaceInstancesFailed = 0
-                End If
-                intReturnMultiplier = 1
-            End If
-
-            ' TPM namespace instances should either be retrieved, or they should be failed
-            If intTriStateTPMNamespaceInstancesFailed = 0 Then
-                ' TPM namespace instances retrieved (no failure) and stored in arrTPMWMINamespaceInstances
-
-                intReturnMultiplier = intReturnMultiplier * 2048 * 8
-
-                intReturnCode = TestTPMInstancesForEnabledTPMUsingTPMInstances(boolTemp, arrTPMWMINamespaceInstances)
-                If intReturnCode <> 0 Then
-                    intFunctionReturn = intFunctionReturn + (-1 * intReturnMultiplier)
-                Else
-                    If boolTemp = True Then
-                        intPreliminaryTriStateEnabledTPMPresent = -1
+        If intTriStateTPMPresent = 0 Then
+            ' There is no TPM present. Therefore, it is not possible for there to be a
+            ' TPM that is enabled, activated, or ready.
+            intTriStateEnabledTPMPresent = 0
+            intTriStateActivatedTPMPresent = 0
+            intTriStateReadyTPMPresent = 0
+        Else
+            ' There is a TPM present. Proceed with testing for enabled, activated, and
+            ' ready TPMs.
+            If intTriStateTPMNamespaceInstancesFailed <> -1 Then
+                ' Use of the TPM WMI namespace has not already failed
+                If intTriStateTPMNamespaceInstancesFailed = 1 Or TestObjectForData(arrTPMWMINamespaceInstances) = False Then
+                    ' TPM namespace instances are not yet retrieved
+                    intReturnMultiplier = intReturnMultiplier * 16
+                    intReturnCode = GetTPMInstances(arrTPMWMINamespaceInstances)
+                    If intReturnCode < 0 Then
+                        intTriStateTPMNamespaceInstancesFailed = -1
+                        intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
+                    ElseIf intReturnCode = 0 Then
+                        intTriStateTPMNamespaceInstancesFailed = -1
                     Else
-                        intPreliminaryTriStateEnabledTPMPresent = 0
+                        intTriStateTPMNamespaceInstancesFailed = 0
                     End If
+                    intReturnMultiplier = 1
                 End If
 
-                intReturnCode = TestTPMInstancesForActivatedTPMUsingTPMInstances(boolTemp, arrTPMWMINamespaceInstances)
-                If intReturnCode <> 0 Then
-                    intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier)
-                Else
-                    If boolTemp = True Then
-                        intPreliminaryTriStateActivatedTPMPresent = -1
+                ' TPM namespace instances should either be retrieved, or they should be
+                ' failed
+                If intTriStateTPMNamespaceInstancesFailed = 0 Then
+                    ' TPM namespace instances retrieved (no failure) and stored in
+                    ' arrTPMWMINamespaceInstances
+
+                    intReturnMultiplier = intReturnMultiplier * 2048 * 8
+
+                    intReturnCode = TestTPMInstancesForEnabledTPMUsingTPMInstances(boolTemp, arrTPMWMINamespaceInstances)
+                    If intReturnCode <> 0 Then
+                        intFunctionReturn = intFunctionReturn + (-1 * intReturnMultiplier)
                     Else
-                        intPreliminaryTriStateActivatedTPMPresent = 0
+                        If boolTemp = True Then
+                            intPreliminaryTriStateEnabledTPMPresent = -1
+                        Else
+                            intPreliminaryTriStateEnabledTPMPresent = 0
+                        End If
                     End If
-                End If
 
-                intReturnCode = TestTPMInstancesForReadyTPMUsingTPMInstances(boolTemp, arrTPMWMINamespaceInstances)
-                If intReturnCode <> 0 Then
-                    intFunctionReturn = intFunctionReturn + (-3 * intReturnMultiplier)
-                Else
-                    If boolTemp = True Then
-                        intPreliminaryTriStateReadyTPMPresent = -1
+                    intReturnCode = TestTPMInstancesForActivatedTPMUsingTPMInstances(boolTemp, arrTPMWMINamespaceInstances)
+                    If intReturnCode <> 0 Then
+                        intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier)
                     Else
-                        intPreliminaryTriStateReadyTPMPresent = 0
+                        If boolTemp = True Then
+                            intPreliminaryTriStateActivatedTPMPresent = -1
+                        Else
+                            intPreliminaryTriStateActivatedTPMPresent = 0
+                        End If
                     End If
-                End If
 
-                If intFunctionReturn <> 0 Then
-                    ' An error occurred in this section
+                    intReturnCode = TestTPMInstancesForReadyTPMUsingTPMInstances(boolTemp, arrTPMWMINamespaceInstances)
+                    If intReturnCode <> 0 Then
+                        intFunctionReturn = intFunctionReturn + (-3 * intReturnMultiplier)
+                    Else
+                        If boolTemp = True Then
+                            intPreliminaryTriStateReadyTPMPresent = -1
+                        Else
+                            intPreliminaryTriStateReadyTPMPresent = 0
+                        End If
+                    End If
+
+                    If intFunctionReturn <> 0 Then
+                        ' An error occurred in this section
+                        intFunctionReturn = 1
+                    End If
+                Else
+                    ' The retrieval of TPM namespace instances failed
                     intFunctionReturn = 1
                 End If
             Else
-                ' The retrieval of TPM namespace instances failed
+                ' The retrieval of TPM namespace instances has already failed
                 intFunctionReturn = 1
             End If
-        Else
-            ' The retrieval of TPM namespace instances has already failed
-            intFunctionReturn = 1
         End If
 
         intTriStateEnabledTPMPresent = intPreliminaryTriStateEnabledTPMPresent
