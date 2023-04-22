@@ -1,5 +1,5 @@
 Function TestObjectForData(ByVal objToCheck)
-    'region FunctionMetadata ####################################################
+    'region FunctionMetadata #######################################################
     ' Checks an object or variable to see if it "has data".
     ' If any of the following are true, then objToCheck is regarded as NOT having data:
     '   VarType(objToCheck) = 0
@@ -12,49 +12,52 @@ Function TestObjectForData(ByVal objToCheck)
     '   IsArray(objToCheck) = True And UBound(objToCheck) < 0
     ' In any of these cases, the function returns False. Otherwise, it returns True.
     '
-    ' Version: 1.1.20210613.0
-    'endregion FunctionMetadata ####################################################
+    ' Version: 1.1.20210613.1
+    'endregion FunctionMetadata #######################################################
 
-    'region License ####################################################
+    'region License ################################################################
     ' Copyright 2021 Frank Lesniak
     '
-    ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
-    ' software and associated documentation files (the "Software"), to deal in the Software
-    ' without restriction, including without limitation the rights to use, copy, modify, merge,
-    ' publish, distribute, sublicense, and/or sell copies of the Software, and to permit
-    ' persons to whom the Software is furnished to do so, subject to the following conditions:
+    ' Permission is hereby granted, free of charge, to any person obtaining a copy of
+    ' this software and associated documentation files (the "Software"), to deal in the
+    ' Software without restriction, including without limitation the rights to use,
+    ' copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+    ' Software, and to permit persons to whom the Software is furnished to do so,
+    ' subject to the following conditions:
     '
-    ' The above copyright notice and this permission notice shall be included in all copies or
-    ' substantial portions of the Software.
+    ' The above copyright notice and this permission notice shall be included in all
+    ' copies or substantial portions of the Software.
     '
-    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-    ' INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-    ' PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-    ' FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-    ' OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-    ' DEALINGS IN THE SOFTWARE.
-    'endregion License ####################################################
+    ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    ' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+    ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+    ' COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+    ' AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    ' WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    'endregion License ################################################################
 
-    'region DownloadLocationNotice ####################################################
-    ' The most up-to-date version of this script can be found on the author's GitHub repository
-    ' at https://github.com/franklesniak/sysadmin-accelerator
-    'endregion DownloadLocationNotice ####################################################
+    'region DownloadLocationNotice #################################################
+    ' The most up-to-date version of this script can be found on the author's GitHub
+    ' repository at https://github.com/franklesniak/sysadmin-accelerator
+    'endregion DownloadLocationNotice #################################################
 
-    'region Acknowledgements ####################################################
-    ' Thanks to Scott Dexter for writing the article "Empty Nothing And Null How Do You Feel
-    ' Today", which inspired me to create this function. https://evolt.org/node/346
+    'region Acknowledgements #######################################################
+    ' Thanks to Scott Dexter for writing the article "Empty Nothing And Null How Do You
+    ' Feel Today", which inspired me to create this function.
+    ' https://evolt.org/node/346
     '
-    ' Thanks also to "RhinoScript" for the article "Testing for Empty Arrays" for providing
-    ' guidance for how to test for the empty array condition in VBScript.
+    ' Thanks also to "RhinoScript" for the article "Testing for Empty Arrays" for
+    ' providing guidance for how to test for the empty array condition in VBScript.
     ' https://wiki.mcneel.com/developer/scriptsamples/emptyarray
     '
-    ' Thanks also "iamresearcher" who posted this and inspired the test case for vbNullString:
+    ' Thanks also "iamresearcher" who posted this and inspired the test case for
+    ' vbNullString:
     ' https://www.vbforums.com/showthread.php?684799-The-Differences-among-Empty-Nothing-vbNull-vbNullChar-vbNullString-and-the-Zero-L
-    'endregion Acknowledgements ####################################################
+    'endregion Acknowledgements #######################################################
 
-    'region DependsOn ####################################################
+    'region DependsOn ##############################################################
     ' None!
-    'endregion DependsOn ####################################################
+    'endregion DependsOn ##############################################################
 
     Dim boolTestResult
     Dim boolFunctionReturn
