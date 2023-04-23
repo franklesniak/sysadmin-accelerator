@@ -13,6 +13,10 @@ Function TestObjectIsStringGUID(ByRef boolResult, ByVal objToTest)
     '
     ' The function returns 0 if the test was successful, a negative integer otherwise.
     '
+    ' Note: this function requires VBScript 5.0 or later, which is included with
+    ' Internet Explorer 5.0 or later, Windows Scripting Host 2.0 or later, and Windows
+    ' 2000 or later.
+    '
     ' Example 1:
     '   objToTest = "8589D070-619D-41FB-9D93-D6F50F6AD99D"
     '   intReturnCode = TestObjectIsStringGUID(boolResult, objToTest)
@@ -100,6 +104,12 @@ Function TestObjectIsStringGUID(ByRef boolResult, ByVal objToTest)
     ' The most up-to-date version of this script can be found on the author's GitHub
     ' repository at https://github.com/franklesniak/sysadmin-accelerator
     'endregion DownloadLocationNotice #################################################
+
+    'region Acknowledgements #######################################################
+    ' Thanks to Gunter Born for covering RegExp in "Microsoft Windows Scripting Host
+    ' 2.0 Developer's Guide", which indicated that RegExp requries VBScript 5.0 or
+    ' newer and saved me some time.
+    'endregion Acknowledgements #######################################################
 
     'region DependsOn ##############################################################
     ' TestObjectIsStringContainingData()
