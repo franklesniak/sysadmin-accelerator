@@ -2,7 +2,7 @@ Function GetComputerUUIDUsingComputerSystemProductInstances(ByRef strComputerUUI
     'region FunctionMetadata #######################################################
     ' Assuming that arrComputerSystemProductInstances represents an array / collection
     ' of the available computer system product instances (of type
-    ' Win32_ComputerSystemProduct), this function obtains the name universally unique
+    ' Win32_ComputerSystemProduct), this function obtains the universally unique
     ' identifier (UUID) of the computer, which is a 128-bit identifier represented as a
     ' string in GUID format (AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE)
     '
