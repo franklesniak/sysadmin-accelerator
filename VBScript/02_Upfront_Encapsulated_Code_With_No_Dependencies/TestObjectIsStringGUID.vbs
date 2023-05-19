@@ -127,7 +127,7 @@ Function TestObjectIsStringGUID(ByRef boolResult, ByVal objToTest)
     Else
         ' objToTest is a string containing data
         On Error Resume Next
-        Set objRegExp = New RegExp
+        Set objRegExp = CreateObject("VBScript.RegExp")
         If Err Then
             ' RegExp object could not be created
             Err.Clear
