@@ -34,11 +34,11 @@ Function TestSystemEnclosureInstanceIsDockingStation(ByRef boolInstanceIsDocking
     '       Next
     '   End If
     '
-    ' Version: 1.0.20210624.0
+    ' Version: 1.1.20230518.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    ' Copyright 2023 Frank Lesniak
     '
     ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
     ' software and associated documentation files (the "Software"), to deal in the Software
@@ -103,35 +103,41 @@ Function TestSystemEnclosureInstanceIsDockingStation(ByRef boolInstanceIsDocking
                 If VarType(arrChassisTypes) = VARTYPE_ARRAY Then
                     ' arrChassisTypes is an array
                     boolInterimResult = False
+                    On Error Resume Next
                     For Each intChassisType in arrChassisTypes
-                        If TestObjectIsAnyTypeOfInteger(intChassisType) <> True Then
-                            If TestObjectIsStringContainingData(intChassisType) <> True Then
-                                If intFunctionReturn >= 0 Then
-                                    intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
-                                End If
-                            Else
-                                ' intChassisType was a string. Try to convert it to int
-                                On Error Resume Next
-                                intChassisType = CInt(intChassisType)
-                                If Err Then
-                                    On Error Goto 0
-                                    Err.Clear
-                                    intFunctionReturn = intFunctionReturn + (-6 * intReturnMultiplier)
+                        If Err Then
+                            Err.Clear
+                        Else
+                            If TestObjectIsAnyTypeOfInteger(intChassisType) <> True Then
+                                If TestObjectIsStringContainingData(intChassisType) <> True Then
+                                    If intFunctionReturn >= 0 Then
+                                        intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
+                                    End If
                                 Else
-                                    On Error Goto 0
-                                    ' intChassisType is now an integer
-                                    If TestWin32SystemEnclosureChassisTypeIsDockingStation(intChassisType) = True Then
-                                        boolInterimResult = True
+                                    ' intChassisType was a string. Try to convert it to int
+                                    intChassisType = CInt(intChassisType)
+                                    If Err Then
+                                        Err.Clear
+                                        intFunctionReturn = intFunctionReturn + (-6 * intReturnMultiplier)
+                                    Else
+                                        ' intChassisType is now an integer
+                                        If TestWin32SystemEnclosureChassisTypeIsDockingStation(intChassisType) = True Then
+                                            boolInterimResult = True
+                                        End If
                                     End If
                                 End If
-                            End If
-                        Else
-                            ' intChassisType is an integer
-                            If TestWin32SystemEnclosureChassisTypeIsDockingStation(intChassisType) = True Then
-                                boolInterimResult = True
+                            Else
+                                ' intChassisType is an integer
+                                If TestWin32SystemEnclosureChassisTypeIsDockingStation(intChassisType) = True Then
+                                    boolInterimResult = True
+                                End If
                             End If
                         End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 ElseIf TestObjectIsAnyTypeOfInteger(arrChassisTypes) = True Then
                     ' arrChassisTypes is a single integer
                     boolInterimResult = TestWin32SystemEnclosureChassisTypeIsDockingStation(arrChassisTypes)
