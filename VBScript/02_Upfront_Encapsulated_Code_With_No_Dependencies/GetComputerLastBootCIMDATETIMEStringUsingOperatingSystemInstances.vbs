@@ -44,11 +44,11 @@ Function GetComputerLastBootCIMDATETIMEStringUsingOperatingSystemInstances(ByRef
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210723.0
+    ' Version: 1.1.20230518.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    ' Copyright 2023 Frank Lesniak
     '
     ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
     ' software and associated documentation files (the "Software"), to deal in the Software
@@ -87,8 +87,8 @@ Function GetComputerLastBootCIMDATETIMEStringUsingOperatingSystemInstances(ByRef
     Dim intReturnMultiplier
 
     Dim intTemp
-    Dim intCounterA
     Dim strInterimResult
+    Dim objOperatingSystemInstance
     Dim strOldInterimResult
     Dim strResultToReturn
     Dim intCountOfOperatingSystems
@@ -120,27 +120,33 @@ Function GetComputerLastBootCIMDATETIMEStringUsingOperatingSystemInstances(ByRef
                 ElseIf intTemp = 0 Then
                     intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
-                    For intCounterA = 0 To (intTemp - 1)
-                        strOldInterimResult = strInterimResult
-                        On Error Resume Next
-                        strInterimResult = arrOperatingSystemInstances.ItemIndex(intCounterA).LastBootUpTime
+                    On Error Resume Next
+                    For Each objOperatingSystemInstance in arrOperatingSystemInstances
                         If Err Then
-                            On Error Goto 0
                             Err.Clear
-                            strInterimResult = strOldInterimResult
                         Else
-                            On Error Goto 0
-                            If TestObjectForData(strInterimResult) <> True Then
+                            strOldInterimResult = strInterimResult
+                            strInterimResult = objOperatingSystemInstance.LastBootUpTime
+                            If Err Then
+                                Err.Clear
                                 strInterimResult = strOldInterimResult
                             Else
-                                ' Found a result with real boot up time data
-                                If TestObjectIsStringContainingData(strResultToReturn) = False Then
-                                    strResultToReturn = strInterimResult
+                                If TestObjectForData(strInterimResult) <> True Then
+                                    strInterimResult = strOldInterimResult
+                                Else
+                                    ' Found a result with real boot up time data
+                                    If TestObjectIsStringContainingData(strResultToReturn) = False Then
+                                        strResultToReturn = strInterimResult
+                                    End If
+                                    intCountOfOperatingSystems = intCountOfOperatingSystems + 1
                                 End If
-                                intCountOfOperatingSystems = intCountOfOperatingSystems + 1
                             End If
                         End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 End If
             End If
         End If
