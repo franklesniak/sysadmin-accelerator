@@ -64,11 +64,11 @@ Function TestComputerIsPhysicalServerChassisUsingManufacturerModelAndSystemEnclo
     '       End If
     '  End If
     '
-    ' Version: 1.0.20210629.0
+    ' Version: 1.1.20230518.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    ' Copyright 2023 Frank Lesniak
     '
     ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
     ' software and associated documentation files (the "Software"), to deal in the Software
@@ -111,10 +111,10 @@ Function TestComputerIsPhysicalServerChassisUsingManufacturerModelAndSystemEnclo
     Dim intFunctionReturn
     Dim intReturnMultiplier
     Dim boolInterimResult
+    Dim objSystemEnclosureInstance
     Dim intReturnCode
     Dim boolIsVirtualMachine
     Dim intTemp
-    Dim intCounter
     Dim boolInstanceIsDockingStation
     Dim arrChassisTypes
     Dim intChassisType
@@ -149,65 +149,71 @@ Function TestComputerIsPhysicalServerChassisUsingManufacturerModelAndSystemEnclo
                     Else
                         ' intTemp is an integer
                         intReturnMultiplier = intReturnMultiplier * 4
-                        For intCounter = 0 To (intTemp - 1)
-                            If intFunctionReturn = 0 And boolInterimResult = False Then
-                                intReturnCode = TestSystemEnclosureInstanceIsDockingStation(boolInstanceIsDockingStation, arrSystemEnclosureInstances.ItemIndex(intCounter))
-                                If intReturnCode <> 0 Then
-                                    intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
-                                Else
-                                    If boolInstanceIsDockingStation = False Then
-                                        ' The instance specified by
-                                        ' arrSystemEnclosureInstances.ItemIndex(intCounter)
-                                        ' is not a docking station
-                                        On Error Resume Next
-                                        arrChassisTypes = arrSystemEnclosureInstances.ItemIndex(intCounter).ChassisTypes
-                                        If Err Then
-                                            On Error Goto 0
-                                            Err.Clear
-                                            intFunctionReturn = intFunctionReturn + (-1 * intReturnMultiplier * 128 * 8)
-                                        Else
-                                            On Error Goto 0
-                                            If TestObjectForData(arrChassisTypes) <> True Then
-                                                intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier * 128 * 8)
+                        On Error Resume Next
+                        For Each objSystemEnclosureInstance in arrSystemEnclosureInstances
+                            If Err Then
+                                Err.Clear
+                            Else
+                                If intFunctionReturn = 0 And boolInterimResult = False Then
+                                    intReturnCode = TestSystemEnclosureInstanceIsDockingStation(boolInstanceIsDockingStation, objSystemEnclosureInstance)
+                                    If intReturnCode <> 0 Then
+                                        intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
+                                    Else
+                                        If boolInstanceIsDockingStation = False Then
+                                            ' The instance specified by
+                                            ' objSystemEnclosureInstance is not a docking
+                                            ' station
+                                            arrChassisTypes = objSystemEnclosureInstance.ChassisTypes
+                                            If Err Then
+                                                Err.Clear
+                                                intFunctionReturn = intFunctionReturn + (-1 * intReturnMultiplier * 128 * 8)
                                             Else
-                                                If VarType(arrChassisTypes) = VARTYPE_ARRAY Then
-                                                    ' arrChassisTypes is an array
-                                                    For Each intChassisType in arrChassisTypes
-                                                        If TestObjectIsAnyTypeOfInteger(intChassisType) <> True Then
-                                                            If TestObjectIsStringContainingData(intChassisType) <> True Then
-                                                                If intFunctionReturn >= 0 Then
-                                                                    intFunctionReturn = intFunctionReturn + (-3 * intReturnMultiplier * 128 * 8)
-                                                                End If
+                                                If TestObjectForData(arrChassisTypes) <> True Then
+                                                    intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier * 128 * 8)
+                                                Else
+                                                    If VarType(arrChassisTypes) = VARTYPE_ARRAY Then
+                                                        ' arrChassisTypes is an array
+                                                        For Each intChassisType in arrChassisTypes
+                                                            If Err Then
+                                                                Err.Clear
                                                             Else
-                                                                ' intChassisType was a string. Try to convert it to int
-                                                                On Error Resume Next
-                                                                intChassisType = CInt(intChassisType)
-                                                                If Err Then
-                                                                    On Error Goto 0
-                                                                    Err.Clear
-                                                                    intFunctionReturn = intFunctionReturn + (-4 * intReturnMultiplier * 128 * 8)
+                                                                If TestObjectIsAnyTypeOfInteger(intChassisType) <> True Then
+                                                                    If TestObjectIsStringContainingData(intChassisType) <> True Then
+                                                                        If intFunctionReturn >= 0 Then
+                                                                            intFunctionReturn = intFunctionReturn + (-3 * intReturnMultiplier * 128 * 8)
+                                                                        End If
+                                                                    Else
+                                                                        ' intChassisType was a string. Try to convert it to int
+                                                                        intChassisType = CInt(intChassisType)
+                                                                        If Err Then
+                                                                            Err.Clear
+                                                                            intFunctionReturn = intFunctionReturn + (-4 * intReturnMultiplier * 128 * 8)
+                                                                        Else
+                                                                            ' intChassisType is now an integer
+                                                                            If TestWin32SystemEnclosureChassisTypeIsServer(intChassisType) = True Then
+                                                                                boolInterimResult = True
+                                                                            End If
+                                                                        End If
+                                                                    End If
                                                                 Else
-                                                                    On Error Goto 0
-                                                                    ' intChassisType is now an integer
+                                                                    ' intChassisType is an integer
                                                                     If TestWin32SystemEnclosureChassisTypeIsServer(intChassisType) = True Then
                                                                         boolInterimResult = True
                                                                     End If
                                                                 End If
                                                             End If
-                                                        Else
-                                                            ' intChassisType is an integer
-                                                            If TestWin32SystemEnclosureChassisTypeIsServer(intChassisType) = True Then
-                                                                boolInterimResult = True
-                                                            End If
+                                                        Next
+                                                        If Err Then
+                                                            Err.Clear
                                                         End If
-                                                    Next
-                                                ElseIf TestObjectIsAnyTypeOfInteger(arrChassisTypes) = True Then
-                                                    ' arrChassisTypes is a single integer
-                                                    boolInterimResult = TestWin32SystemEnclosureChassisTypeIsServer(intChassisType)
-                                                Else
-                                                    ' arrChassisTypes was not an array nor an
-                                                    ' integer
-                                                    intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier * 128 * 8)
+                                                    ElseIf TestObjectIsAnyTypeOfInteger(arrChassisTypes) = True Then
+                                                        ' arrChassisTypes is a single integer
+                                                        boolInterimResult = TestWin32SystemEnclosureChassisTypeIsServer(intChassisType)
+                                                    Else
+                                                        ' arrChassisTypes was not an array nor an
+                                                        ' integer
+                                                        intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier * 128 * 8)
+                                                    End If
                                                 End If
                                             End If
                                         End If
@@ -215,6 +221,10 @@ Function TestComputerIsPhysicalServerChassisUsingManufacturerModelAndSystemEnclo
                                 End If
                             End If
                         Next
+                        On Error Goto 0
+                        If Err Then
+                            Err.Clear
+                        End If
                     End If
                 End If
             End If
