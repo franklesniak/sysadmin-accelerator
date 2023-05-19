@@ -33,11 +33,11 @@ Function GetWindowsOperatingSystemVersionNumberAsStringUsingWMI(ByRef strOperati
     '       ' Windows 98, or Windows NT 4.0, it is likely that WMI is not installed.
     '   End If
     '
-    ' Version: 1.1.20210614.0
+    ' Version: 1.2.20230518.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    ' Copyright 2023 Frank Lesniak
     '
     ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
     ' software and associated documentation files (the "Software"), to deal in the Software
@@ -69,7 +69,8 @@ Function GetWindowsOperatingSystemVersionNumberAsStringUsingWMI(ByRef strOperati
 
     'region DependsOn ####################################################
     ' TestObjectForData()
-    ' ConnectLocalWMINamespace()
+    ' GetOperatingSystemInstances()
+    ' TestObjectIsStringContainingData()
     'endregion DependsOn ####################################################
 
     Dim intFunctionReturn
@@ -79,50 +80,61 @@ Function GetWindowsOperatingSystemVersionNumberAsStringUsingWMI(ByRef strOperati
     Dim colOperatingSystems
     Dim objOperatingSystem
     Dim strWorkingOSVersion
+    Dim strOldWorkingOSVersion
+    Dim strOSVersionToReturn
     Dim arrVersionNumber
+    Dim intCountOfOperatingSystems
 
     Err.Clear
 
     intFunctionReturn = 0
     intReturnMultiplier = 1
+    strWorkingOSVersion = ""
+    strOSVersionToReturn = ""
+    intCountOfOperatingSystems = 0
 
-    intReturnCode = ConnectLocalWMINamespace(objWMI, Null, Null)
-    If intReturnCode <> 0 Then
+    intReturnCode = GetOperatingSystemInstances(colOperatingSystems)
+    If intReturnCode < 0 Then
         intFunctionReturn = intFunctionReturn + (intReturnCode * intReturnMultiplier)
     Else
-        intReturnMultiplier = intReturnMultiplier * 16
         On Error Resume Next
-        Set colOperatingSystems = objWMI.ExecQuery("Select Version From Win32_OperatingSystem")
-        If Err Then
-            On Error Goto 0
-            Err.Clear
-            intFunctionReturn = intFunctionReturn + (-1 * intReturnMultiplier)
-        Else
-            For Each objOperatingSystem in colOperatingSystems
-                strWorkingOSVersion = objOperatingSystem.Version
-            Next
+        For Each objOperatingSystem in colOperatingSystems
             If Err Then
-                On Error Goto 0
                 Err.Clear
-                intFunctionReturn = intFunctionReturn + (-2 * intReturnMultiplier)
             Else
-                On Error Goto 0
-                If TestObjectForData(strWorkingOSVersion) = False Then
-                    intFunctionReturn = intFunctionReturn + (-3 * intReturnMultiplier)
+                strOldWorkingOSVersion = strWorkingOSVersion
+                strWorkingOSVersion = objOperatingSystem.Version
+                If Err Then
+                    Err.Clear
+                    strWorkingOSVersion = strOldWorkingOSVersion
+                Else
+                    If TestObjectIsStringContainingData(strWorkingOSVersion) <> True Then
+                        strWorkingOSVersion = strOldWorkingOSVersion
+                    Else
+                        ' Found a result with real OS version data
+                        If TestObjectForData(strOSVersionToReturn) = False Then
+                            strOSVersionToReturn = strWorkingOSVersion
+                        End If
+                        intCountOfOperatingSystems = intCountOfOperatingSystems + 1
+                    End If
                 End If
             End If
+        Next
+        On Error Goto 0
+        If Err Then
+            Err.Clear
         End If
     End If
 
-    If intFunctionReturn = 0 Then
+    If intFunctionReturn = 0 And TestObjectIsStringContainingData(strOSVersionToReturn) Then
         If boolExcludeRevisionNumber = True Then
-            arrVersionNumber = Split(strWorkingOSVersion, ".")
+            arrVersionNumber = Split(strOSVersionToReturn, ".")
             If UBound(arrVersionNumber) >= 3 Then
                 ' Revision portion of version number is present
-                strWorkingOSVersion = arrVersionNumber(0) & "." & arrVersionNumber(1) & "." & arrVersionNumber(2)
+                strOSVersionToReturn = arrVersionNumber(0) & "." & arrVersionNumber(1) & "." & arrVersionNumber(2)
             End If
         End If
-        strOperatingSystemVersion = strWorkingOSVersion
+        strOperatingSystemVersion = strOSVersionToReturn
     End If
     
     GetWindowsOperatingSystemVersionNumberAsStringUsingWMI = intFunctionReturn
