@@ -30,7 +30,7 @@ Function GetWindowsAutopilotHardwareHashUsingMDMDevDetailExt01Instances(ByRef st
     '       End If
     '   End If
     '
-    ' Version: 1.0.20230424.0
+    ' Version: 1.1.20230518.0
     'endregion FunctionMetadata #######################################################
 
     'region License ################################################################
@@ -73,8 +73,8 @@ Function GetWindowsAutopilotHardwareHashUsingMDMDevDetailExt01Instances(ByRef st
     Dim intFunctionReturn
     Dim intReturnMultiplier
     Dim intTemp
-    Dim intCounterA
     Dim strInterimResult
+    Dim objMDMDevDetailExt01Instance
     Dim strOldInterimResult
     Dim strResultToReturn
     Dim intCountOfHardwareHashes
@@ -106,27 +106,33 @@ Function GetWindowsAutopilotHardwareHashUsingMDMDevDetailExt01Instances(ByRef st
                 ElseIf intTemp = 0 Then
                     intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
-                    For intCounterA = 0 To (intTemp - 1)
-                        strOldInterimResult = strInterimResult
-                        On Error Resume Next
-                        strInterimResult = arrMDMDevDetailExt01Instances.ItemIndex(intCounterA).DeviceHardwareData
+                    On Error Resume Next
+                    For Each objMDMDevDetailExt01Instance in arrMDMDevDetailExt01Instances
                         If Err Then
-                            On Error Goto 0
                             Err.Clear
-                            strInterimResult = strOldInterimResult
                         Else
-                            On Error Goto 0
-                            If TestObjectForData(strInterimResult) <> True Then
+                            strOldInterimResult = strInterimResult
+                            strInterimResult = objMDMDevDetailExt01Instance.DeviceHardwareData
+                            If Err Then
+                                Err.Clear
                                 strInterimResult = strOldInterimResult
                             Else
-                                ' Found a result with a real hardware hash
-                                If TestObjectForData(strResultToReturn) = False Then
-                                    strResultToReturn = strInterimResult
+                                If TestObjectForData(strInterimResult) <> True Then
+                                    strInterimResult = strOldInterimResult
+                                Else
+                                    ' Found a result with a real hardware hash
+                                    If TestObjectForData(strResultToReturn) = False Then
+                                        strResultToReturn = strInterimResult
+                                    End If
+                                    intCountOfHardwareHashes = intCountOfHardwareHashes + 1
                                 End If
-                                intCountOfHardwareHashes = intCountOfHardwareHashes + 1
                             End If
                         End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 End If
             End If
         End If
