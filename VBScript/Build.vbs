@@ -32,9 +32,17 @@ Option Explicit
 
 Dim arrSubfolderNames
 Dim strOutputFileName
+Dim arrFilesToIgnore
 
 arrSubfolderNames = Array("01_Overall_Script_Header", "02_Upfront_Encapsulated_Code_With_No_Dependencies", "03_Main_Section_Code_Executed_Every_Time", "99_Script_Footer")
 strOutputFileName = "Accelerator.vbs"
+
+' Set the following equal to an array of files to be excluded from the build process.
+' By default, this is set to exclude the Version.vbs file from the build process
+' because classes are not compatible with early versions of VBScript, and,
+' specifically, the use of the New keyword in the Version class results in syntax
+' errors if you try to run the code on early versions of VBScript.
+arrFilesToIgnore = Array("02_Upfront_Encapsulated_Code_With_No_Dependencies\Version.vbs")
 
 Function TestObjectForData(ByVal objToCheck)
     'region FunctionMetadata ####################################################
