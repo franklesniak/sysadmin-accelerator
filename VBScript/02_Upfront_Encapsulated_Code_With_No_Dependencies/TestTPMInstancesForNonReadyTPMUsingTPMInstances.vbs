@@ -68,8 +68,8 @@ Function TestTPMInstancesForNonReadyTPMUsingTPMInstances(ByRef boolNonReadyTPMPr
     Dim intFunctionReturn
     Dim intReturnMultiplier
     Dim intTemp
-    Dim intCounterA
     Dim boolResult
+    Dim objTPMInstance
     Dim boolSingleResult
     Dim intReturnCode
     Dim boolTest
@@ -99,36 +99,39 @@ Function TestTPMInstancesForNonReadyTPMUsingTPMInstances(ByRef boolNonReadyTPMPr
                     intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
                     boolResult = False
-                    For intCounterA = 0 To (intTemp - 1)
-                        'On Error Resume Next
-                        intReturnCode = (arrTPMInstances.ItemIndex(intCounterA)).IsReady(boolSingleResult)
+                    On Error Resume Next
+                    For Each objTPMInstance in arrTPMInstances
                         If Err Then
-                            On Error Goto 0
                             Err.Clear
-                            ' Assume it's not ready
-                            boolResult = True
                         Else
-                            On Error Goto 0
-                            If intReturnCode <> 0 Then
+                            intReturnCode = objTPMInstance.IsReady(boolSingleResult)
+                            If Err Then
+                                Err.Clear
                                 ' Assume it's not ready
                                 boolResult = True
                             Else
-                                On Error Resume Next
-                                boolTest = (boolSingleResult <> True)
-                                If Err Then
-                                    On Error Goto 0
-                                    Err.Clear
+                                If intReturnCode <> 0 Then
                                     ' Assume it's not ready
                                     boolResult = True
                                 Else
-                                    On Error Goto 0
-                                    If boolTest = True Then
+                                    boolTest = (boolSingleResult <> True)
+                                    If Err Then
+                                        Err.Clear
+                                        ' Assume it's not ready
                                         boolResult = True
+                                    Else
+                                        If boolTest = True Then
+                                            boolResult = True
+                                        End If
                                     End If
                                 End If
                             End If
                         End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 End If
             End If
         End If
