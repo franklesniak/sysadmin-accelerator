@@ -31,7 +31,7 @@ Function GetComputerUUIDUsingComputerSystemProductInstances(ByRef strComputerUUI
     '       End If
     '   End If
     '
-    ' Version: 1.0.20230422.0
+    ' Version: 1.1.20230518.0
     'endregion FunctionMetadata #######################################################
 
     'region License ################################################################
@@ -72,8 +72,8 @@ Function GetComputerUUIDUsingComputerSystemProductInstances(ByRef strComputerUUI
     Dim intFunctionReturn
     Dim intReturnMultiplier
     Dim intTemp
-    Dim intCounterA
     Dim strInterimResult
+    Dim objComputerSystemProductInstance
     Dim strOldInterimResult
     Dim strResultToReturn
     Dim intCountOfUUIDs
@@ -105,27 +105,33 @@ Function GetComputerUUIDUsingComputerSystemProductInstances(ByRef strComputerUUI
                 ElseIf intTemp = 0 Then
                     intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
-                    For intCounterA = 0 To (intTemp - 1)
-                        strOldInterimResult = strInterimResult
-                        On Error Resume Next
-                        strInterimResult = arrComputerSystemProductInstances.ItemIndex(intCounterA).UUID
+                    On Error Resume Next
+                    For Each objComputerSystemProductInstance in arrComputerSystemProductInstances
                         If Err Then
-                            On Error Goto 0
                             Err.Clear
-                            strInterimResult = strOldInterimResult
                         Else
-                            On Error Goto 0
-                            If TestObjectForData(strInterimResult) <> True Then
+                            strOldInterimResult = strInterimResult
+                            strInterimResult = objComputerSystemProductInstance.UUID
+                            If Err Then
+                                Err.Clear
                                 strInterimResult = strOldInterimResult
                             Else
-                                ' Found a result with real UUID data
-                                If TestObjectForData(strResultToReturn) = False Then
-                                    strResultToReturn = strInterimResult
+                                If TestObjectForData(strInterimResult) <> True Then
+                                    strInterimResult = strOldInterimResult
+                                Else
+                                    ' Found a result with real UUID data
+                                    If TestObjectForData(strResultToReturn) = False Then
+                                        strResultToReturn = strInterimResult
+                                    End If
+                                    intCountOfUUIDs = intCountOfUUIDs + 1
                                 End If
-                                intCountOfUUIDs = intCountOfUUIDs + 1
                             End If
                         End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 End If
             End If
         End If
