@@ -47,11 +47,11 @@ Function GetBIOSReleaseDateCIMDATETIMEStringUsingBIOSInstances(ByRef strBIOSRele
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210711.0
+    ' Version: 1.1.20230518.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    ' Copyright 2023 Frank Lesniak
     '
     ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
     ' software and associated documentation files (the "Software"), to deal in the Software
@@ -97,8 +97,8 @@ Function GetBIOSReleaseDateCIMDATETIMEStringUsingBIOSInstances(ByRef strBIOSRele
     Dim intReturnMultiplier
 
     Dim intTemp
-    Dim intCounterA
     Dim strInterimResult
+    Dim objBIOSInstance
     Dim strOldInterimResult
     Dim strResultToReturn
     Dim intCountOfBIOSes
@@ -130,27 +130,33 @@ Function GetBIOSReleaseDateCIMDATETIMEStringUsingBIOSInstances(ByRef strBIOSRele
                 ElseIf intTemp = 0 Then
                     intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
-                    For intCounterA = 0 To (intTemp - 1)
-                        strOldInterimResult = strInterimResult
-                        On Error Resume Next
-                        strInterimResult = arrBIOSInstances.ItemIndex(intCounterA).ReleaseDate
+                    On Error Resume Next
+                    For Each objBIOSInstance in arrBIOSInstances
                         If Err Then
-                            On Error Goto 0
                             Err.Clear
-                            strInterimResult = strOldInterimResult
                         Else
-                            On Error Goto 0
-                            If TestObjectForData(strInterimResult) <> True Then
+                            strOldInterimResult = strInterimResult
+                            strInterimResult = objBIOSInstance.ReleaseDate
+                            If Err Then
+                                Err.Clear
                                 strInterimResult = strOldInterimResult
                             Else
-                                ' Found a result with real model data
-                                If TestObjectIsStringContainingData(strResultToReturn) = False Then
-                                    strResultToReturn = strInterimResult
+                                If TestObjectForData(strInterimResult) <> True Then
+                                    strInterimResult = strOldInterimResult
+                                Else
+                                    ' Found a result with real release date data
+                                    If TestObjectIsStringContainingData(strResultToReturn) = False Then
+                                        strResultToReturn = strInterimResult
+                                    End If
+                                    intCountOfBIOSes = intCountOfBIOSes + 1
                                 End If
-                                intCountOfBIOSes = intCountOfBIOSes + 1
                             End If
                         End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 End If
             End If
         End If
