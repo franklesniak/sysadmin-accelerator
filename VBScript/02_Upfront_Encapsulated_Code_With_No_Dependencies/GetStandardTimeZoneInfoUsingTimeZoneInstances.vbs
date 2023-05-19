@@ -75,11 +75,11 @@ Function GetStandardTimeZoneInfoUsingTimeZoneInstances(ByRef strStandardTimeZone
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210710.0
+    ' Version: 1.0.20230518.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    ' Copyright 2023 Frank Lesniak
     '
     ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
     ' software and associated documentation files (the "Software"), to deal in the Software
@@ -116,7 +116,6 @@ Function GetStandardTimeZoneInfoUsingTimeZoneInstances(ByRef strStandardTimeZone
     Dim intFunctionReturn
     Dim intReturnMultiplier
     Dim intTemp
-    Dim intCounterA
 
     Dim strInterimTimeZoneName
     Dim intInterimStandardTimeInitialOffsetFromUTC
@@ -130,6 +129,8 @@ Function GetStandardTimeZoneInfoUsingTimeZoneInstances(ByRef strStandardTimeZone
     Dim intInterimMinute
     Dim intInterimSecond
     Dim intInterimMillisecond
+
+    Dim objTimeZoneInstance
 
     Dim strOldInterimTimeZoneName
     Dim intOldInterimStandardTimeInitialOffsetFromUTC
@@ -208,249 +209,225 @@ Function GetStandardTimeZoneInfoUsingTimeZoneInstances(ByRef strStandardTimeZone
                 ElseIf intTemp = 0 Then
                     intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
-                    For intCounterA = 0 To (intTemp - 1)
-                        strOldInterimTimeZoneName = strInterimTimeZoneName
-                        intOldInterimStandardTimeInitialOffsetFromUTC = intInterimStandardTimeInitialOffsetFromUTC
-                        intOldInterimTimeBias = intInterimTimeBias
-                        intOldInterimStandardTimeOffsetFromUTC = intInterimStandardTimeOffsetFromUTC
-                        intOldInterimStartYear = intInterimStartYear
-                        intOldInterimStartMonth = intInterimStartMonth
-                        intOldInterimNthDayOfWeekInMonth = intInterimNthDayOfWeekInMonth
-                        intOldInterimDayOfWeek = intInterimDayOfWeek
-                        intOldInterimHour = intInterimHour
-                        intOldInterimMinute = intInterimMinute
-                        intOldInterimSecond = intInterimSecond
-                        intOldInterimMillisecond = intInterimMillisecond
-
-                        boolThisTimeZoneObjectWasValid = False
-
-                        'region strStandardTimeZoneName ####################################################
-                        On Error Resume Next
-                        strInterimTimeZoneName = arrTimeZoneInstances.ItemIndex(intCounterA).StandardName
+                    On Error Resume Next
+                    For Each objTimeZoneInstance in arrTimeZoneInstances
                         If Err Then
-                            On Error Goto 0
                             Err.Clear
-                            strInterimTimeZoneName = strOldInterimTimeZoneName
                         Else
-                            On Error Goto 0
-                            If TestObjectIsStringContainingData(strInterimTimeZoneName) <> True Then
+                            strOldInterimTimeZoneName = strInterimTimeZoneName
+                            intOldInterimStandardTimeInitialOffsetFromUTC = intInterimStandardTimeInitialOffsetFromUTC
+                            intOldInterimTimeBias = intInterimTimeBias
+                            intOldInterimStandardTimeOffsetFromUTC = intInterimStandardTimeOffsetFromUTC
+                            intOldInterimStartYear = intInterimStartYear
+                            intOldInterimStartMonth = intInterimStartMonth
+                            intOldInterimNthDayOfWeekInMonth = intInterimNthDayOfWeekInMonth
+                            intOldInterimDayOfWeek = intInterimDayOfWeek
+                            intOldInterimHour = intInterimHour
+                            intOldInterimMinute = intInterimMinute
+                            intOldInterimSecond = intInterimSecond
+                            intOldInterimMillisecond = intInterimMillisecond
+
+                            boolThisTimeZoneObjectWasValid = False
+
+                            'region strStandardTimeZoneName ####################################################
+                            strInterimTimeZoneName = objTimeZoneInstance.StandardName
+                            If Err Then
+                                Err.Clear
                                 strInterimTimeZoneName = strOldInterimTimeZoneName
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(strTimeZoneNameToReturn) = False Then
-                                    strTimeZoneNameToReturn = strInterimTimeZoneName
+                                If TestObjectIsStringContainingData(strInterimTimeZoneName) <> True Then
+                                    strInterimTimeZoneName = strOldInterimTimeZoneName
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(strTimeZoneNameToReturn) = False Then
+                                        strTimeZoneNameToReturn = strInterimTimeZoneName
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
                             End If
-                        End If
-                        'endregion strStandardTimeZoneName ####################################################
+                            'endregion strStandardTimeZoneName ####################################################
 
-                        'region intStandardTimeOffsetFromUTC ####################################################
-                        On Error Resume Next
-                        intInterimStandardTimeInitialOffsetFromUTC = arrTimeZoneInstances.ItemIndex(intCounterA).Bias
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimStandardTimeInitialOffsetFromUTC = intOldInterimStandardTimeInitialOffsetFromUTC
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimStandardTimeInitialOffsetFromUTC) <> True Then
+                            'region intStandardTimeOffsetFromUTC ####################################################
+                            intInterimStandardTimeInitialOffsetFromUTC = objTimeZoneInstance.Bias
+                            If Err Then
+                                Err.Clear
                                 intInterimStandardTimeInitialOffsetFromUTC = intOldInterimStandardTimeInitialOffsetFromUTC
                             Else
-                                On Error Resume Next
-                                intInterimTimeBias = arrTimeZoneInstances.ItemIndex(intCounterA).StandardBias
-                                If Err Then
-                                    On Error Goto 0
-                                    Err.Clear
-                                    intInterimTimeBias = intOldInterimTimeBias
+                                If TestObjectIsAnyTypeOfInteger(intInterimStandardTimeInitialOffsetFromUTC) <> True Then
+                                    intInterimStandardTimeInitialOffsetFromUTC = intOldInterimStandardTimeInitialOffsetFromUTC
                                 Else
-                                    On Error Goto 0
-                                    If TestObjectIsAnyTypeOfInteger(intInterimTimeBias) <> True Then
+                                    intInterimTimeBias = objTimeZoneInstance.StandardBias
+                                    If Err Then
+                                        Err.Clear
                                         intInterimTimeBias = intOldInterimTimeBias
-                                    Else                                
-                                        ' Found a result with real time zone data
-                                        If TestObjectForData(intStandardTimeOffsetFromUTCToReturn) = False Then
-                                            intStandardTimeOffsetFromUTCToReturn = intInterimStandardTimeInitialOffsetFromUTC - intInterimTimeBias
+                                    Else
+                                        If TestObjectIsAnyTypeOfInteger(intInterimTimeBias) <> True Then
+                                            intInterimTimeBias = intOldInterimTimeBias
+                                        Else                                
+                                            ' Found a result with real time zone data
+                                            If TestObjectForData(intStandardTimeOffsetFromUTCToReturn) = False Then
+                                                intStandardTimeOffsetFromUTCToReturn = intInterimStandardTimeInitialOffsetFromUTC - intInterimTimeBias
+                                            End If
+                                            boolThisTimeZoneObjectWasValid = True
                                         End If
-                                        boolThisTimeZoneObjectWasValid = True
                                     End If
                                 End If
                             End If
-                        End If
-                        'endregion intStandardTimeOffsetFromUTC ####################################################
+                            'endregion intStandardTimeOffsetFromUTC ####################################################
 
-                        'region intStartYear ####################################################
-                        On Error Resume Next
-                        intInterimStartYear = arrTimeZoneInstances.ItemIndex(intCounterA).StandardYear
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimStartYear = intOldInterimStartYear
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimStartYear) <> True Then
+                            'region intStartYear ####################################################
+                            intInterimStartYear = objTimeZoneInstance.StandardYear
+                            If Err Then
+                                Err.Clear
                                 intInterimStartYear = intOldInterimStartYear
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intStartYearToReturn) = False Then
-                                    intStartYearToReturn = intInterimStartYear
+                                If TestObjectIsAnyTypeOfInteger(intInterimStartYear) <> True Then
+                                    intInterimStartYear = intOldInterimStartYear
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intStartYearToReturn) = False Then
+                                        intStartYearToReturn = intInterimStartYear
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
                             End If
-                        End If
-                        'endregion intStartYear ####################################################
+                            'endregion intStartYear ####################################################
 
-                        'region intStartMonth ####################################################
-                        On Error Resume Next
-                        intInterimStartMonth = arrTimeZoneInstances.ItemIndex(intCounterA).StandardMonth
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimStartMonth = intOldInterimStartMonth
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimStartMonth) <> True Then
+                            'region intStartMonth ####################################################
+                            intInterimStartMonth = objTimeZoneInstance.StandardMonth
+                            If Err Then
+                                Err.Clear
                                 intInterimStartMonth = intOldInterimStartMonth
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intStartMonthToReturn) = False Then
-                                    intStartMonthToReturn = intInterimStartMonth
+                                If TestObjectIsAnyTypeOfInteger(intInterimStartMonth) <> True Then
+                                    intInterimStartMonth = intOldInterimStartMonth
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intStartMonthToReturn) = False Then
+                                        intStartMonthToReturn = intInterimStartMonth
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
                             End If
-                        End If
-                        'endregion intStartMonth ####################################################
+                            'endregion intStartMonth ####################################################
 
-                        'region intNthDayOfWeekInMonth ####################################################
-                        On Error Resume Next
-                        intInterimNthDayOfWeekInMonth = arrTimeZoneInstances.ItemIndex(intCounterA).StandardDay
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimNthDayOfWeekInMonth = intOldInterimNthDayOfWeekInMonth
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimNthDayOfWeekInMonth) <> True Then
+                            'region intNthDayOfWeekInMonth ####################################################
+                            intInterimNthDayOfWeekInMonth = objTimeZoneInstance.StandardDay
+                            If Err Then
+                                Err.Clear
                                 intInterimNthDayOfWeekInMonth = intOldInterimNthDayOfWeekInMonth
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intNthDayOfWeekInMonthToReturn) = False Then
-                                    intNthDayOfWeekInMonthToReturn = intInterimNthDayOfWeekInMonth
+                                If TestObjectIsAnyTypeOfInteger(intInterimNthDayOfWeekInMonth) <> True Then
+                                    intInterimNthDayOfWeekInMonth = intOldInterimNthDayOfWeekInMonth
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intNthDayOfWeekInMonthToReturn) = False Then
+                                        intNthDayOfWeekInMonthToReturn = intInterimNthDayOfWeekInMonth
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
                             End If
-                        End If
-                        'endregion intNthDayOfWeekInMonth ####################################################
+                            'endregion intNthDayOfWeekInMonth ####################################################
 
-                        'region intDayOfWeek ####################################################
-                        On Error Resume Next
-                        intInterimDayOfWeek = arrTimeZoneInstances.ItemIndex(intCounterA).StandardDayOfWeek
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimDayOfWeek = intOldInterimDayOfWeek
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimDayOfWeek) <> True Then
+                            'region intDayOfWeek ####################################################
+                            intInterimDayOfWeek = objTimeZoneInstance.StandardDayOfWeek
+                            If Err Then
+                                Err.Clear
                                 intInterimDayOfWeek = intOldInterimDayOfWeek
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intDayOfWeekToReturn) = False Then
-                                    intDayOfWeekToReturn = intInterimDayOfWeek
+                                If TestObjectIsAnyTypeOfInteger(intInterimDayOfWeek) <> True Then
+                                    intInterimDayOfWeek = intOldInterimDayOfWeek
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intDayOfWeekToReturn) = False Then
+                                        intDayOfWeekToReturn = intInterimDayOfWeek
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
                             End If
-                        End If
-                        'endregion intDayOfWeek ####################################################
+                            'endregion intDayOfWeek ####################################################
 
-                        'region intHour ####################################################
-                        On Error Resume Next
-                        intInterimHour = arrTimeZoneInstances.ItemIndex(intCounterA).StandardHour
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimHour = intOldInterimHour
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimHour) <> True Then
+                            'region intHour ####################################################
+                            intInterimHour = objTimeZoneInstance.StandardHour
+                            If Err Then
+                                Err.Clear
                                 intInterimHour = intOldInterimHour
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intHourToReturn) = False Then
-                                    intHourToReturn = intInterimHour
+                                If TestObjectIsAnyTypeOfInteger(intInterimHour) <> True Then
+                                    intInterimHour = intOldInterimHour
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intHourToReturn) = False Then
+                                        intHourToReturn = intInterimHour
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
                             End If
-                        End If
-                        'endregion intHour ####################################################
+                            'endregion intHour ####################################################
 
-                        'region intMinute ####################################################
-                        On Error Resume Next
-                        intInterimMinute = arrTimeZoneInstances.ItemIndex(intCounterA).StandardMinute
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimMinute = intOldInterimMinute
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimMinute) <> True Then
+                            'region intMinute ####################################################
+                            intInterimMinute = objTimeZoneInstance.StandardMinute
+                            If Err Then
+                                Err.Clear
                                 intInterimMinute = intOldInterimMinute
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intMinuteToReturn) = False Then
-                                    intMinuteToReturn = intInterimMinute
+                                If TestObjectIsAnyTypeOfInteger(intInterimMinute) <> True Then
+                                    intInterimMinute = intOldInterimMinute
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intMinuteToReturn) = False Then
+                                        intMinuteToReturn = intInterimMinute
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
                             End If
-                        End If
-                        'endregion intMinute ####################################################
+                            'endregion intMinute ####################################################
 
-                        'region intSecond ####################################################
-                        On Error Resume Next
-                        intInterimSecond = arrTimeZoneInstances.ItemIndex(intCounterA).StandardSecond
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimSecond = intOldInterimSecond
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimSecond) <> True Then
+                            'region intSecond ####################################################
+                            intInterimSecond = objTimeZoneInstance.StandardSecond
+                            If Err Then
+                                Err.Clear
                                 intInterimSecond = intOldInterimSecond
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intSecondToReturn) = False Then
-                                    intSecondToReturn = intInterimSecond
+                                If TestObjectIsAnyTypeOfInteger(intInterimSecond) <> True Then
+                                    intInterimSecond = intOldInterimSecond
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intSecondToReturn) = False Then
+                                        intSecondToReturn = intInterimSecond
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
                             End If
-                        End If
-                        'endregion intSecond ####################################################
+                            'endregion intSecond ####################################################
 
-                        'region intMillisecond ####################################################
-                        On Error Resume Next
-                        intInterimMillisecond = arrTimeZoneInstances.ItemIndex(intCounterA).StandardMillisecond
-                        If Err Then
-                            On Error Goto 0
-                            Err.Clear
-                            intInterimMillisecond = intOldInterimMillisecond
-                        Else
-                            On Error Goto 0
-                            If TestObjectIsAnyTypeOfInteger(intInterimMillisecond) <> True Then
+                            'region intMillisecond ####################################################
+                            intInterimMillisecond = objTimeZoneInstance.StandardMillisecond
+                            If Err Then
+                                Err.Clear
                                 intInterimMillisecond = intOldInterimMillisecond
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intMillisecondToReturn) = False Then
-                                    intMillisecondToReturn = intInterimMillisecond
+                                If TestObjectIsAnyTypeOfInteger(intInterimMillisecond) <> True Then
+                                    intInterimMillisecond = intOldInterimMillisecond
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intMillisecondToReturn) = False Then
+                                        intMillisecondToReturn = intInterimMillisecond
+                                    End If
+                                    boolThisTimeZoneObjectWasValid = True
                                 End If
-                                boolThisTimeZoneObjectWasValid = True
+                            End If
+                            'endregion intMillisecond ####################################################
+
+                            If boolThisTimeZoneObjectWasValid = True Then
+                                intCountOfTimeZones = intCountOfTimeZones + 1
                             End If
                         End If
-                        'endregion intMillisecond ####################################################
-
-                        If boolThisTimeZoneObjectWasValid = True Then
-                            intCountOfTimeZones = intCountOfTimeZones + 1
-                        End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 End If
             End If
         End If
