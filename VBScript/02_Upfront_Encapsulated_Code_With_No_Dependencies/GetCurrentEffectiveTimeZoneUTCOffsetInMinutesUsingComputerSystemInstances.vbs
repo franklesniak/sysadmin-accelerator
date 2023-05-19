@@ -32,11 +32,11 @@ Function GetCurrentEffectiveTimeZoneUTCOffsetInMinutesUsingComputerSystemInstanc
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210710.0
+    ' Version: 1.1.20230518.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    ' Copyright 2023 Frank Lesniak
     '
     ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
     ' software and associated documentation files (the "Software"), to deal in the Software
@@ -72,8 +72,8 @@ Function GetCurrentEffectiveTimeZoneUTCOffsetInMinutesUsingComputerSystemInstanc
     Dim intFunctionReturn
     Dim intReturnMultiplier
     Dim intTemp
-    Dim intCounterA
     Dim intInterimResult
+    Dim objComputerSystemInstance
     Dim intOldInterimResult
     Dim intResultToReturn
     Dim intCountOfComputerSystems
@@ -105,27 +105,33 @@ Function GetCurrentEffectiveTimeZoneUTCOffsetInMinutesUsingComputerSystemInstanc
                 ElseIf intTemp = 0 Then
                     intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
-                    For intCounterA = 0 To (intTemp - 1)
-                        intOldInterimResult = intInterimResult
-                        On Error Resume Next
-                        intInterimResult = arrComputerSystemInstances.ItemIndex(intCounterA).CurrentTimeZone
+                    On Error Resume Next
+                    For Each objComputerSystemInstance in arrComputerSystemInstances
                         If Err Then
-                            On Error Goto 0
                             Err.Clear
-                            intInterimResult = intOldInterimResult
                         Else
-                            On Error Goto 0
-                            If TestObjectForData(intInterimResult) <> True Then
+                            intOldInterimResult = intInterimResult
+                            intInterimResult = objComputerSystemInstance.CurrentTimeZone
+                            If Err Then
+                                Err.Clear
                                 intInterimResult = intOldInterimResult
                             Else
-                                ' Found a result with real time zone data
-                                If TestObjectForData(intResultToReturn) = False Then
-                                    intResultToReturn = intInterimResult
+                                If TestObjectForData(intInterimResult) <> True Then
+                                    intInterimResult = intOldInterimResult
+                                Else
+                                    ' Found a result with real time zone data
+                                    If TestObjectForData(intResultToReturn) = False Then
+                                        intResultToReturn = intInterimResult
+                                    End If
+                                    intCountOfComputerSystems = intCountOfComputerSystems + 1
                                 End If
-                                intCountOfComputerSystems = intCountOfComputerSystems + 1
                             End If
                         End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 End If
             End If
         End If
