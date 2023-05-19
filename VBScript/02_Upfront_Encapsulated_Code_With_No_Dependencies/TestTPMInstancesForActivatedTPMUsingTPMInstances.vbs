@@ -26,11 +26,11 @@ Function TestTPMInstancesForActivatedTPMUsingTPMInstances(ByRef boolActivatedTPM
     '       End If
     '   End If
     '
-    ' Version: 1.0.20210615.0
+    ' Version: 1.1.20230518.0
     'endregion FunctionMetadata ####################################################
 
     'region License ####################################################
-    ' Copyright 2021 Frank Lesniak
+    ' Copyright 2023 Frank Lesniak
     '
     ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
     ' software and associated documentation files (the "Software"), to deal in the Software
@@ -67,8 +67,8 @@ Function TestTPMInstancesForActivatedTPMUsingTPMInstances(ByRef boolActivatedTPM
     Dim intFunctionReturn
     Dim intReturnMultiplier
     Dim intTemp
-    Dim intCounterA
     Dim boolResult
+    Dim objTPMInstance
     Dim boolSingleResult
     Dim intReturnCode
     Dim boolTest
@@ -98,33 +98,36 @@ Function TestTPMInstancesForActivatedTPMUsingTPMInstances(ByRef boolActivatedTPM
                     intFunctionReturn = intFunctionReturn + (-5 * intReturnMultiplier)
                 Else
                     boolResult = False
-                    For intCounterA = 0 To (intTemp - 1)
-                        On Error Resume Next
-                        intReturnCode = arrTPMInstances.ItemIndex(intCounterA).IsActivated(boolSingleResult)
+                    On Error Resume Next
+                    For Each objTPMInstance in arrTPMInstances
                         If Err Then
-                            On Error Goto 0
                             Err.Clear
-                            ' Assume it's not activated and keep going
                         Else
-                            On Error Goto 0
-                            If intReturnCode <> 0 Then
+                            intReturnCode = objTPMInstance.IsActivated(boolSingleResult)
+                            If Err Then
+                                Err.Clear
                                 ' Assume it's not activated and keep going
                             Else
-                                On Error Resume Next
-                                boolTest = (boolSingleResult = True)
-                                If Err Then
-                                    On Error Goto 0
-                                    Err.Clear
+                                If intReturnCode <> 0 Then
                                     ' Assume it's not activated and keep going
                                 Else
-                                    On Error Goto 0
-                                    If boolTest = True Then
-                                        boolResult = True
+                                    boolTest = (boolSingleResult = True)
+                                    If Err Then
+                                        Err.Clear
+                                        ' Assume it's not activated and keep going
+                                    Else
+                                        If boolTest = True Then
+                                            boolResult = True
+                                        End If
                                     End If
                                 End If
                             End If
                         End If
                     Next
+                    On Error Goto 0
+                    If Err Then
+                        Err.Clear
+                    End If
                 End If
             End If
         End If
