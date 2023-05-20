@@ -1,7 +1,7 @@
 Option Explicit
 
 'region License ####################################################
-' Copyright 2021 Frank Lesniak
+' Copyright 2023 Frank Lesniak
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this
 ' software and associated documentation files (the "Software"), to deal in the Software
@@ -356,6 +356,10 @@ Dim strOutput
 Dim objTextStreamFile
 Dim strTextFile
 Dim objADODBRecordSet
+Dim strFolderName
+Dim boolIgnoreThisFile
+Dim strFileName
+Dim strFileToIgnore
 
 Const ForReading = 1
 Const ForWriting = 2
@@ -390,22 +394,35 @@ Else
                 For Each strSubfolderName in arrSubfolderNames
                     If objFileSystemObject.FolderExists(strScriptDir & strSubfolderName & "\") Then
                         Set objFolder = objFileSystemObject.GetFolder(strScriptDir & strSubfolderName & "\")
+                        strFolderName = objFolder.Name
                         Set objADODBRecordSet = CreateObject("ADODB.RecordSet")
                         objADODBRecordSet.Fields.Append "FilePath", adVarChar, 300
                         objADODBRecordSet.CursorType = adOpenStatic
                         objADODBRecordSet.Open
                         Set arrFiles = objFolder.Files
                         For Each objFile in arrFiles
-                            On Error Resume Next
-                            objADODBRecordSet.AddNew "FilePath", objFile.Path
-                            'objADODBRecordSet.Fields(0) = objFile.Path
-                            objADODBRecordSet.Update
-                            If Err Then
-                                On Error Goto 0
-                                Err.Clear
-                                WScript.Echo("An error occurred processing the file: " & objFile.Path)
-                            Else
-                                On Error Goto 0
+                            boolIgnoreThisFile = False
+
+                            strFileName = objFile.Name
+                            For Each strFileToIgnore in arrFilesToIgnore
+                                If strFileToIgnore = (strFolderName & "\" & strFileName) Then
+                                    boolIgnoreThisFile = True
+                                    Exit For
+                                End If
+                            Next
+
+                            If boolIgnoreThisFile = False Then
+                                On Error Resume Next
+                                objADODBRecordSet.AddNew "FilePath", objFile.Path
+                                'objADODBRecordSet.Fields(0) = objFile.Path
+                                objADODBRecordSet.Update
+                                If Err Then
+                                    On Error Goto 0
+                                    Err.Clear
+                                    WScript.Echo("An error occurred processing the file: " & objFile.Path)
+                                Else
+                                    On Error Goto 0
+                                End If
                             End If
                         Next
                         objADODBRecordSet.Sort = "FilePath"
